@@ -59,8 +59,8 @@ git clone https://github.com/C0ngHung/Assignment_Java3_JSP_Servlet.git
 
 ## 🧑‍💻 Tác giả
 
-* 🧠 Development : [Đào Công Hùng, Bùi Lê Phong](https://github.com/C0ngHung)
-* 🧠 Co-dev      : [Bùi Lê Phong]
+* 🧠 Development : [Đào Công Hùng](https://github.com/C0ngHung)
+* 🧠 Co-dev      : [Bùi Lê Phong](https://github.com/builephong1508)
 ---
 
 ## ❤️ Kết
