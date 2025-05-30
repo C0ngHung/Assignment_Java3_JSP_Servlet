@@ -65,6 +65,6 @@ git clone https://github.com/C0ngHung/Assignment_Java3_JSP_Servlet.git
 
 ## ❤️ Kết
 
-Dự án còn đơn giản nhưng đủ dùng cho quản lý một trang báo vừa và nhỏ. Mong được đóng góp thêm để phát triển thêm tính năng như:
+Dự án còn đơn giản nhưng đủ dùng cho quản lý một trang báo vừa và nhỏ. Mong được đóng góp thêm để phát triển thêm tính năng.
 
 ---
