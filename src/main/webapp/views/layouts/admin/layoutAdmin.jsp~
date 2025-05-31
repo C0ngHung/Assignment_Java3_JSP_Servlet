@@ -21,7 +21,7 @@
 
     <div class="flex max-w-[1200px] mx-auto min-h-screen">
         <main class="min-h-screen">
-            <jsp:include page="${componentPath}/main.jsp" />
+            <jsp:include page="${componentPath}/main.jsp}" />
         </main>
     </div>
 

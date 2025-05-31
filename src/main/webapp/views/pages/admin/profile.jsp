@@ -1,16 +1,10 @@
 <%--
   Created by IntelliJ IDEA.
-  User: User
+  User: buile
   Date: 30/05/2025
-  Time: 2:31 PM
+  Time: 9:15 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<h1>Profile</h1>
+<p>Trang thông tin của người dùng</p>
