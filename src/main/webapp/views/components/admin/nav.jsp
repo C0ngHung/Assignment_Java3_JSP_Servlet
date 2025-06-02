@@ -3,7 +3,7 @@
     <div class="mx-auto">
         <ul class="flex space-x-12 justify-center text-[18px]">
             <li>
-                <a href="${pageContext.request.contextPath}/admin/home-page" class="hover:bg-blue-600 hover:font-bold uppercase">trang chủ</a>
+                <a href="${pageContext.request.contextPath}/admin/index" class="hover:bg-blue-600 hover:font-bold uppercase">trang chủ</a>
             </li>
             <li>
                 <a href="${pageContext.request.contextPath}/admin/categories" class="hover:bg-blue-600 hover:font-bold uppercase">loại tin</a>
