@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: buile
-  Date: 31/05/2025
-  Time: 1:35 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="bg-blue-400 text-white h-[50px] flex items-center">
     <div class="mx-auto">

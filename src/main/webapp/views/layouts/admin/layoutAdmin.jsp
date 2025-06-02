@@ -8,7 +8,7 @@
     <title>Trang Admin</title>
 </head>
 
-<body>
+<body class="bg-gray-100">
     <c:set var="componentPath" value="/views/components/admin" />
 
     <header>
@@ -20,7 +20,7 @@
     </nav>
 
     <div class="flex max-w-[1200px] mx-auto min-h-screen">
-        <main class="min-h-screen">
+        <main class="min-h-screen w-full bg-white">
             <jsp:include page="${componentPath}/main.jsp" />
         </main>
     </div>
