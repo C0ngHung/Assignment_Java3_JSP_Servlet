@@ -19,7 +19,7 @@
 </head>
 
 <body class="bg-gray-100 text-gray-800">
-	<c:set var="componentPath" value="/views/components" />
+	<c:set var="componentPath" value="/views/components/user" />
 	<header>
 		<jsp:include page="${componentPath}/header.jsp" />
 	</header>
