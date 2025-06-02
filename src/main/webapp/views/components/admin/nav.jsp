@@ -1,0 +1,22 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<div class="bg-blue-400 text-white h-[50px] flex items-center">
+    <div class="mx-auto">
+        <ul class="flex space-x-12 justify-center text-[18px]">
+            <li>
+                <a href="${pageContext.request.contextPath}/admin/home-page" class="hover:bg-blue-600 hover:font-bold uppercase">trang chủ</a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/admin/categories" class="hover:bg-blue-600 hover:font-bold uppercase">loại tin</a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/admin/news" class="hover:bg-blue-600 hover:font-bold uppercase">tin tức</a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/admin/profile" class="hover:bg-blue-600 hover:font-bold uppercase">profile</a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/admin/newsletter" class="hover:bg-blue-600 hover:font-bold uppercase">hộp thư</a>
+            </li>
+        </ul>
+    </div>
+</div>
