@@ -13,12 +13,13 @@ public class JDBCHelper {
 
     // Khai báo URL, username, password lấy từ file config
     private static final String url = AppConfigReader.getDbUrl();
+    private static final String dbDriver = AppConfigReader.getDbDriver();
     private static final String dbUsername = AppConfigReader.getDbUsername();
     private static final String dbPassword = AppConfigReader.getDbPassword();
 
     static {
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Class.forName(dbDriver);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Không tìm thấy Driver JDBC", e);
         }
