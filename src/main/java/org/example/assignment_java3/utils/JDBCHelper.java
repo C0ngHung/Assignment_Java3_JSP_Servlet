@@ -1,4 +1,4 @@
-package org.example.assignment_java3.config;
+package org.example.assignment_java3.utils;
 
 
 import java.sql.Connection;
