@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Cấu hình bảo mật không nên đẩy lên GitHub
+src/main/resources/application.properties
