@@ -36,6 +36,10 @@ public class AppConfigReader {
         return props.getProperty("db.url");
     }
 
+    public static String getDbDriver() {
+        return props.getProperty("db.driver");
+    }
+
     public static String getDbUsername() {
         return props.getProperty("db.username");
     }
