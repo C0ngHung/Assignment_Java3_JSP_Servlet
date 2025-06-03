@@ -1,6 +1,8 @@
 package org.example.assignment_java3.utils;
 
 
+import org.example.assignment_java3.config.AppConfigReader;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,9 +11,10 @@ import java.sql.SQLException;
 
 public class JDBCHelper {
 
-    private static final String URL = ("jdbc:sqlserver://localhost:1433;databaseName=NewsDB;encrypt=true;trustServerCertificate=true;characterEncoding=UTF-8");
-    private static final String USERNAME = "sa";
-    private static final String PASSWORD = "songlong";
+    // Khai báo URL, username, password lấy từ file config
+    private static final String url = AppConfigReader.getDbUrl();
+    private static final String dbUsername = AppConfigReader.getDbUsername();
+    private static final String dbPassword = AppConfigReader.getDbPassword();
 
     static {
         try {
@@ -23,7 +26,7 @@ public class JDBCHelper {
 
     // Connection
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        return DriverManager.getConnection(url, dbUsername, dbPassword);
     }
 
     /**
