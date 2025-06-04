@@ -3,6 +3,7 @@ package org.example.assignment_java3.auth;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.util.Base64;
 
 @WebServlet("/login")
-public class LoginServlet {
+public class LoginServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
@@ -26,7 +27,7 @@ public class LoginServlet {
                 }
             }
         }
-        req.getRequestDispatcher("/views/pages/loginForm.jsp").forward(req, resp);
+        req.getRequestDispatcher("/views/pages/auth/login.jsp").forward(req, resp);
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -66,6 +67,6 @@ public class LoginServlet {
         } else {
             req.setAttribute("message", "Invalid login info!");
         }
-        req.getRequestDispatcher("/views/pages/loginForm.jsp").forward(req, resp);
+        req.getRequestDispatcher("/views/pages/auth/login.jsp").forward(req, resp);
     }
 }
