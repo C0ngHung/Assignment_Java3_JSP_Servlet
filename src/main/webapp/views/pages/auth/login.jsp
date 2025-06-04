@@ -16,13 +16,13 @@
         <div>
             <label class="block text-sm font-medium mb-1">Tên đặng nhập</label>
             <input type="text" name="username" value="${username}"
-                   class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300" required>
+                   class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300">
         </div>
 
         <div>
             <label class="block text-sm font-medium mb-1">Mật khẩu</label>
             <input name="password" type="password"
-                   class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300" required>
+                   class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300">
         </div>
 
         <div class="flex justify-between">
