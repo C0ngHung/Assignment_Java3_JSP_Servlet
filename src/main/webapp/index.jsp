@@ -21,8 +21,8 @@
 <body class="bg-gray-100 text-gray-800">
 <header>
     <div class="w-full mx-auto flex justify-center bg-white shadow">
-        <img src="https://caodang.fpt.edu.vn/wp-content/uploads/image3-1.png" alt="Ảnh minh họa"
-             class="h-[250px] w-full object-cover"/>
+        <img src="${pageContext.request.contextPath}/images/baomoi-logo.jpg" alt="Ảnh minh họa"
+             class="h-[250px] w-full object-cover object-[0_25%]"/>
     </div>
 </header>
 <nav>
@@ -53,10 +53,11 @@
                        class="relative z-10 border-b-2 border-transparent group-hover:border-orange-400 group-hover:text-orange-400 transition duration-300 uppercase">Thể
                         Thao</a>
                 </li>
-				<!-- Đăng Nhập -->
+                <!-- Đăng Nhập -->
                 <li class="relative group">
                     <a href="${pageContext.request.contextPath}/login"
-                       class="relative z-10 border-b-2 border-transparent group-hover:border-green-400 group-hover:text-green-400 transition duration-300 uppercase">Đăng Nhập</a>
+                       class="relative z-10 border-b-2 border-transparent group-hover:border-green-400 group-hover:text-green-400 transition duration-300 uppercase">Đăng
+                        Nhập</a>
                 </li>
             </ul>
         </div>
@@ -66,6 +67,22 @@
     <main class="w-3/4 min-h-screen">
         <div class="max-w-7xl mx-auto p-4 bg-white rounded shadow min-h-screen flex items-center justify-center">
             <!-- Nội dung chính -->
+            <div class="max-w-7xl mx-auto p-4 bg-white rounded shadow h-full">
+                <article class="h-[20px] w-auto">
+                    <%--    Hiển thị danh sách bản tin ---%>
+                    <c:forEach var="news" items="${newsList}">
+                        <jsp:include page="/views/pages/user/dasboard.jsp">
+                            <jsp:param name="title" value="${news.title}"/>
+                            <jsp:param name="content" value="${news.content}"/>
+                            <jsp:param name="image" value="${news.image}"/>
+                            <jsp:param name="postDate" value="${news.postDate}"/>
+                            <jsp:param name="viewCount" value="${news.viewCount}"/>
+                            <jsp:param name="author" value="${news.author}"/>
+                        </jsp:include>
+                    </c:forEach>
+                    Tổng số bản tin: ${newsList.size()}
+                </article>
+            </div>
         </div>
     </main>
     <aside class="w-1/4 min-h-screen">
@@ -83,7 +100,8 @@
                    class="text-[14px] text-gray-900 font-semibold hover:text-black">5 Bản Tin Bạn Đã Xem</a>
             </div>
             <div class="absolute bottom-0 left-0 w-full text-[14px] rounded">
-                <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition w-26">Đăng ký</button>
+                <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition w-26">Đăng ký
+                </button>
                 <input type="text" placeholder="Nhập email đăng ký nhận tin mới"
                        class="w-full px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 border border-gray-300"/>
             </div>

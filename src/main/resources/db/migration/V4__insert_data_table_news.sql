@@ -103,7 +103,6 @@ Sing! Asia là cuộc thi âm nhạc diễn ra trên du thuyền kéo dài 30 ng
 Phương Mỹ Chi nổi tiếng trong làng nhạc từ năm 10 tuổi sau cuộc thi Giọng hát Việt nhí 2013 với ca khúc Quê em mùa nước lũ (Tiến Luân). Hơn 10 năm theo đuổi ca hát, cô ra mắt nhiều MV, từng phát hành album Thương về miền Trung (2017), 16 xuân trăng (2019), Bát nhã thuyền (2020). Năm 2023, cô ra album Vũ trụ cò bay, lấy cảm hứng từ các tác phẩm văn học Việt. Cô còn tham gia diễn xuất qua các dự án điện ảnh Hai lúa (2014), Mùa hè 1999 (chưa phát hành), Nhà gia tiên (2025), web-drama Tiệm hoa dì ghẻ.
 ', 'news03.webp', '2024-05-19', 'user2', 1, 'cat1', 0);
 
-
 INSERT INTO news (id, title, content, image, postDate, author, viewCount, categoryId, home)
 VALUES ('news4', N'"Doraemon" đánh bại "Mission: Impossible 8"', N'"Doraemon 44" dẫn đầu doanh thu rạp Việt cuối tuần với hơn 34 tỷ đồng, vượt gấp đôi "Mission: Impossible 8" của Tom Cruise.
 

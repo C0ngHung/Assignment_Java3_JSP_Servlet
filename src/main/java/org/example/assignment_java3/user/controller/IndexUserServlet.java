@@ -5,16 +5,26 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.assignment_java3.DAO.DAOImpl.NewsDAOImpl;
+import org.example.assignment_java3.DAO.NewsDAO;
+import org.example.assignment_java3.entity.News;
+import org.example.assignment_java3.service.NewsService;
+import org.example.assignment_java3.service.serviceImpl.NewsServiceImpl;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/user/index")
 public class IndexUserServlet extends HttpServlet {
 
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws IOException, ServletException {
+    private final NewsDAO newsDAO = new NewsDAOImpl();
+    private final NewsService newsService = new NewsServiceImpl(newsDAO);
 
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException, ServletException {
         String page = "/views/pages/user/home-page.jsp";
+        List<News> newsList = newsService.getAllNewsByHome();
+        req.setAttribute("newsList", newsList);
         req.setAttribute("page", page);
         req.getRequestDispatcher("/views/layouts/user/layoutUser.jsp").forward(req, resp);
     }

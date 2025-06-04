@@ -14,7 +14,7 @@ public interface NewsDAO {
 
     int deleteNews(String id);
 
-    List<News> getAllNews();
+    List<News> getAllNewsByHome();
 
     List<News> getTop5ViewsCount();
 
