@@ -8,11 +8,13 @@ public interface NewsDAO {
 
     News createNews(News news);
 
-    News getNewsById(int id);
+    News getNewsById(String id);
 
     News updateNews(News news);
 
     int deleteNews(String id);
+
+    List<News> getAllNews();
 
     List<News> getAllNewsByHome();
 

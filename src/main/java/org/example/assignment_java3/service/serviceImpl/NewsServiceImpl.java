@@ -1,18 +1,17 @@
 package org.example.assignment_java3.service.serviceImpl;
 
+import lombok.AllArgsConstructor;
 import org.example.assignment_java3.DAO.NewsDAO;
 import org.example.assignment_java3.entity.News;
 import org.example.assignment_java3.service.NewsService;
 
 import java.util.List;
 
+@AllArgsConstructor
 public class NewsServiceImpl implements NewsService {
 
     private final NewsDAO newsDAO;
 
-    public NewsServiceImpl(NewsDAO newsDAO) {
-        this.newsDAO = newsDAO;
-    }
 
     @Override
     public List<News> getAllNewsByHome() {
