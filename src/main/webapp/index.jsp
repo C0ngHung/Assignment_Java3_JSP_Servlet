@@ -71,7 +71,7 @@
                 <article class="h-[20px] w-auto">
                     <%--    Hiển thị danh sách bản tin ---%>
                     <c:forEach var="news" items="${newsList}">
-                        <jsp:include page="/views/pages/user/dasboard.jsp">
+                        <jsp:include page="/views/pages/user/newsDetail.jsp">
                             <jsp:param name="title" value="${news.title}"/>
                             <jsp:param name="content" value="${news.content}"/>
                             <jsp:param name="image" value="${news.image}"/>

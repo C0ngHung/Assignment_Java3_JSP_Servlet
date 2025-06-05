@@ -11,7 +11,7 @@ import java.io.IOException;
 @WebServlet("/admin/index")
 public class IndexAdminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        String page = "/views/pages/admin/home-page.jsp";
+        String page = "/views/pages/admin/news.jsp";
         req.setAttribute("page", page);
         req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
     }

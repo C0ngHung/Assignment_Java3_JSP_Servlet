@@ -23,4 +23,8 @@ public interface NewsDAO {
     List<News> getTop5NewsLatest();
 
     List<News> getTop5NewsSeenMore();
+
+    List<News> getNewsByCategory(String categoryId);
+
+    boolean updateViewCount(String id);
 }

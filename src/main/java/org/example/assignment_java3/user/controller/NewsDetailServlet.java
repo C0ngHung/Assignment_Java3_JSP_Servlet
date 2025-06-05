@@ -12,10 +12,9 @@ import org.example.assignment_java3.service.NewsService;
 import org.example.assignment_java3.service.serviceImpl.NewsServiceImpl;
 
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/user/index")
-public class IndexUserServlet extends HttpServlet {
+@WebServlet("/news-detail")
+public class NewsDetailServlet extends HttpServlet {
 
     private NewsService newsService;
 
@@ -29,9 +28,12 @@ public class IndexUserServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
-        String page = "/views/pages/user/news.jsp";
-        List<News> newsList = newsService.getAllNewsByHome();
-        req.setAttribute("newsList", newsList);
+        String id = req.getParameter("id");
+        String categoryId = req.getParameter("categoryId");
+        News news = newsService.getNewsById(id);
+        newsService.updateViewCount(id);
+        String page = "/views/pages/user/news-detail.jsp";
+        req.setAttribute("news", news);
         req.setAttribute("page", page);
         req.getRequestDispatcher("/views/layouts/user/layoutUser.jsp").forward(req, resp);
     }
