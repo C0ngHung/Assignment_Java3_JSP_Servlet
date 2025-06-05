@@ -21,10 +21,9 @@ public class IndexUserServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        if (newsService == null) {
-            NewsDAO newsDAO = new NewsDAOImpl();
-            this.newsService = new NewsServiceImpl(newsDAO);
-        }
+        NewsDAO newsDAO = new NewsDAOImpl();
+        this.newsService = new NewsServiceImpl(newsDAO);
+
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)

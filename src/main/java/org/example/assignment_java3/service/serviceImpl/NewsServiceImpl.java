@@ -107,4 +107,14 @@ public class NewsServiceImpl implements NewsService {
             return false;
         }
     }
+
+    @Override
+    public List<News> getNewsByCategory(String categoryId) {
+        try {
+            return newsDAO.getNewsByCategory(categoryId);
+        } catch (RuntimeException e) {
+            System.out.println("Lỗi khi lấy tin tức theo danh muc: " + e.getMessage());
+            return null;
+        }
+    }
 }

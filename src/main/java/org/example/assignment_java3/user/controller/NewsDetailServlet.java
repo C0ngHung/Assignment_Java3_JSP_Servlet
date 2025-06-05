@@ -12,6 +12,7 @@ import org.example.assignment_java3.service.NewsService;
 import org.example.assignment_java3.service.serviceImpl.NewsServiceImpl;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/news-detail")
 public class NewsDetailServlet extends HttpServlet {
@@ -20,10 +21,9 @@ public class NewsDetailServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        if (newsService == null) {
-            NewsDAO newsDAO = new NewsDAOImpl();
-            this.newsService = new NewsServiceImpl(newsDAO);
-        }
+        NewsDAO newsDAO = new NewsDAOImpl();
+        this.newsService = new NewsServiceImpl(newsDAO);
+
     }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -31,9 +31,11 @@ public class NewsDetailServlet extends HttpServlet {
         String id = req.getParameter("id");
         String categoryId = req.getParameter("categoryId");
         News news = newsService.getNewsById(id);
+        List<News> newsList = newsService.getNewsByCategory(categoryId);
         newsService.updateViewCount(id);
         String page = "/views/pages/user/news-detail.jsp";
         req.setAttribute("news", news);
+        req.setAttribute("newsList", newsList);
         req.setAttribute("page", page);
         req.getRequestDispatcher("/views/layouts/user/layoutUser.jsp").forward(req, resp);
     }

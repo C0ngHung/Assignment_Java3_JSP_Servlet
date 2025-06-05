@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="flex-1 space-y-2">
-                    <a href="${pageContext.request.contextPath}/news-detail?id=${news.id}" class="block group">
+                    <a href="${pageContext.request.contextPath}/news-detail?id=${news.id}&categoryId=${news.categoryId}" class="block group">
                         <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transform transition-all duration-300 group-hover:scale-[1.02] origin-left">
                                 ${news.title}
                         </h2>
