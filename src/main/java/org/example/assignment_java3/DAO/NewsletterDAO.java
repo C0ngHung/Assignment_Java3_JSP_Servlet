@@ -6,9 +6,13 @@ import java.util.List;
 
 public interface NewsletterDAO {
 
-    boolean subscribe(String email);
+    Newsletter createNewsletter(Newsletter newsletter);
 
-    boolean unsubscribe(String email);
+    Newsletter getNewsletterById(String id);
 
-    List<Newsletter> getAll();
+    Newsletter updateNewsletter(Newsletter newsletter);
+
+    int deleteNewsletter(String id);
+
+    List<Newsletter> getAllNewsletter();
 }

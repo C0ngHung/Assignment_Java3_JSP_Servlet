@@ -4,6 +4,7 @@ import org.example.assignment_java3.DAO.NewsDAO;
 import org.example.assignment_java3.entity.News;
 import org.example.assignment_java3.utils.JdbcHelper;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class NewsDAOImpl implements NewsDAO {
     private static final String SQL_GET_TOP_5_NEWS_LATEST = "SELECT TOP 5 * FROM news ORDER BY postDate DESC";
     private static final String SQL_GET_TOP_5_VIEWS_COUNT = "SELECT TOP 5 * FROM news ORDER BY viewCount DESC";
 
-    private News mapNewsFromResultSetToNews(java.sql.ResultSet rs) {
+    private News mapNewsFromResultSetToNews(ResultSet rs) {
         try {
             News news = new News();
             news.setId(rs.getString("id"));
