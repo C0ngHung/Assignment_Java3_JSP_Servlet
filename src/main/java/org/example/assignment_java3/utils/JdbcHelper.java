@@ -95,9 +95,9 @@ public class JdbcHelper {
     public static void main(String[] args) {
         try (Connection conn = JdbcHelper.getConnection()) {
             if (conn != null && !conn.isClosed()) {
-                System.out.println("✅ Kết nối SQL Server thành công!");
+                System.out.println("Kết nối SQL Server thành công!");
             } else {
-                System.out.println("❌ Kết nối thất bại.");
+                System.out.println("Kết nối thất bại.");
             }
         } catch (Exception e) {
             System.err.println("Lỗi khi kết nối: " + e.getMessage());

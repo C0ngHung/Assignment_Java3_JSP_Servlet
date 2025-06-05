@@ -14,7 +14,7 @@
     <!-- Form login -->
     <form action="${pageContext.request.contextPath}/login" method="post" class="space-y-4">
         <div>
-            <label class="block text-sm font-medium mb-1">Tên đặng nhập</label>
+            <label class="block text-sm font-medium mb-1">Tên đăng nhập</label>
             <input type="text" name="username" value="${username}"
                    class="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300">
         </div>
