@@ -18,6 +18,8 @@ public class NewsDAOImpl implements NewsDAO {
     private static final String SQL_GET_ALL_NEWS_BY_HOME = "SELECT * FROM news WHERE home = 1";
     private static final String SQL_GET_TOP_5_NEWS_LATEST = "SELECT TOP 5 * FROM news ORDER BY postDate DESC";
     private static final String SQL_GET_TOP_5_VIEWS_COUNT = "SELECT TOP 5 * FROM news ORDER BY viewCount DESC";
+    private static final String SQL_UPDATE_VIEW_COUNT = "UPDATE news SET viewCount = viewCount + 1 WHERE id = ?";
+    private static final String SQL_GET_ALL_NEWS_BY_CATEGORY_ID = "SELECT * FROM news WHERE categoryId = ?";
 
     private News mapNewsFromResultSetToNews(ResultSet rs) {
         try {
@@ -136,5 +138,25 @@ public class NewsDAOImpl implements NewsDAO {
     public List<News> getTop5NewsSeenMore() {
         // throw new UnsupportedOperationException("Method not implemented yet");
         return List.of();
+    }
+
+    @Override
+    public List<News> getNewsByCategory(String categoryId) {
+        return JdbcHelper.query(SQL_GET_ALL_NEWS_BY_CATEGORY_ID, rs -> {
+            List<News> newsList = new ArrayList<>();
+            while (rs.next()) {
+                newsList.add(mapNewsFromResultSetToNews(rs));
+            }
+            return newsList;
+        }, categoryId);
+    }
+
+    @Override
+    public boolean updateViewCount(String id) {
+        if (id == null) {
+            return false;
+        }
+        int row = JdbcHelper.update(SQL_UPDATE_VIEW_COUNT, id);
+        return row > 0;
     }
 }
