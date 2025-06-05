@@ -12,7 +12,7 @@ public interface UserDAO {
 
     User updateUser(User user);
 
-    User deleteUser(String id);
+    int deleteUser(String id);
 
     List<User> getAllUsers();
 
