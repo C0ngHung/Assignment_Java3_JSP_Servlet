@@ -30,7 +30,11 @@ public class IndexUserServlet extends HttpServlet {
             throws IOException, ServletException {
         String page = "/views/pages/user/news.jsp";
         List<News> newsList = newsService.getAllNewsByHome();
+        List<News> listTop5ViewsCount = newsService.getTop5ViewsCount();
+        List<News> listTop5NewsLatest = newsService.getTop5NewsLatest();
         req.setAttribute("newsList", newsList);
+        req.setAttribute("listTop5ViewsCount", listTop5ViewsCount);
+        req.setAttribute("listTop5NewsLatest", listTop5NewsLatest);
         req.setAttribute("page", page);
         req.getRequestDispatcher("/views/layouts/user/layoutUser.jsp").forward(req, resp);
     }
