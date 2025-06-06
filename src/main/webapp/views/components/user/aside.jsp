@@ -50,17 +50,27 @@
         </ul>
     </div>
 
-    <!-- Recently Viewed -->
+    <!-- Top 5 bản tin bạn đã xem gần đây -->
     <div class="p-5 border-b border-gray-100">
-        <a href="${pageContext.request.contextPath}/user/top5-seen"
-           class="flex items-center text-gray-800 hover:text-blue-600 transition-colors duration-200 font-semibold">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            5 Bản Tin Bạn Đã Xem
-        </a>
+            5 Bản Tin Bạn Đã Xem Gần Đây
+        </h2>
+        <ul class="space-y-3">
+            <c:forEach var="recentlyViewedNews" items="${recentlyViewedNews}">
+                <li class="group">
+                    <a href="${pageContext.request.contextPath}/news-detail?id=${recentlyViewedNews.id}&categoryId=${recentlyViewedNews.categoryId}"
+                       class="flex items-start space-x-2 text-gray-600 group-hover:text-blue-600 transition-colors duration-200">
+                        <span class="text-blue-600 mt-1">•</span>
+                        <span class="flex-1 line-clamp-2">${recentlyViewedNews.title}</span>
+                    </a>
+                </li>
+            </c:forEach>
+        </ul>
     </div>
 
     <!-- Đăng ký nhận tin mới -->

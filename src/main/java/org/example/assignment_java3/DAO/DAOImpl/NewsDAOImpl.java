@@ -6,6 +6,7 @@ import org.example.assignment_java3.utils.JdbcHelper;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NewsDAOImpl implements NewsDAO {
@@ -135,10 +136,35 @@ public class NewsDAOImpl implements NewsDAO {
     }
 
     @Override
-    public List<News> getTop5NewsSeenMore() {
-        // throw new UnsupportedOperationException("Method not implemented yet");
-        return List.of();
+    public List<News> getTop5NewsViewed(List<String> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return List.of();
+        }
+
+        String sql = "SELECT TOP 5 * FROM news WHERE id IN (" +
+                String.join(",", Collections.nCopies(ids.size(), "?")) + ")";
+        List<News> newsList = JdbcHelper.query(sql, rs -> {
+            List<News> list = new ArrayList<>();
+            while (rs.next()) {
+                list.add(mapNewsFromResultSetToNews(rs));
+            }
+            return list;
+        }, ids.toArray());
+
+        /*
+         * Gọi hàm sort để sắp xếp newsList theo thứ tự của các id trong list ids.
+         * Cụ thể: dựa vào vị trí (index) của id trong list ids.
+         * Khi thêm id vào list ids, id đầu tiên sẽ có vị trí 0,
+         * id tiếp theo sẽ là 1, 2, 3, 4, 5,...
+         * Khi sort, id có vị trí nhỏ hơn sẽ được lên đầu tiên trong list newsList.
+         */
+        newsList.sort((news1, news2) ->
+                ids.indexOf(news1.getId()) - ids.indexOf(news2.getId())
+        );
+
+        return newsList;
     }
+
 
     @Override
     public List<News> getNewsByCategory(String categoryId) {

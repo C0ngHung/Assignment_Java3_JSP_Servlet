@@ -83,10 +83,15 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<News> getTop5NewsSeenMore() {
-        // throw new UnsupportedOperationException("Method not implemented yet");
-        return List.of();
+    public List<News> getTop5NewsViewed(List<String> ids) {
+        try {
+            return newsDAO.getTop5NewsViewed(ids);
+        } catch (RuntimeException e) {
+            System.out.println("Lỗi khi lấy danh sách 5 tin tức mới xem gần đây: " + e.getMessage());
+            return null;
+        }
     }
+
 
     @Override
     public List<News> getAllNewsByHome() {
