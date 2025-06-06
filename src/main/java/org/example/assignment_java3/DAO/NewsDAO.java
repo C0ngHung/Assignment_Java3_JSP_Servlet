@@ -22,7 +22,7 @@ public interface NewsDAO {
 
     List<News> getTop5NewsLatest();
 
-    List<News> getTop5NewsSeenMore();
+    List<News> getTop5NewsViewed(List<String> ids);
 
     List<News> getNewsByCategory(String categoryId);
 
