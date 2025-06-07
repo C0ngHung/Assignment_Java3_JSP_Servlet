@@ -27,4 +27,5 @@ public interface NewsService {
     boolean updateViewCount(String id);
 
     List<News> getNewsByCategory(String categoryId);
+
 }
