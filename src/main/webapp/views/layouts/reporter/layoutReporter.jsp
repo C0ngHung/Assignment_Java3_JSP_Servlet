@@ -5,7 +5,7 @@
 
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Trang Admin</title>
+    <title>Trang Phóng Viên</title>
 </head>
 
 <body class="bg-gray-100">
@@ -16,11 +16,11 @@
     </header>
 
     <nav>
-        <jsp:include page="${componentPath}/nav.jsp" />
+
     </nav>
 
     <div class="flex max-w-[1200px] mx-auto min-h-screen">
-        <main class="min-h-screen w-full bg-white   ">
+        <main class="min-h-screen w-full bg-white">
             <jsp:include page="${componentPath}/main.jsp" />
         </main>
     </div>

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.assignment_java3.DAO.DAOImpl.UserDAOImpl;
 import org.example.assignment_java3.DAO.UserDAO;
+import org.example.assignment_java3.entity.User;
 import org.example.assignment_java3.service.UserService;
 import org.example.assignment_java3.service.serviceImpl.UserServiceImpl;
 
@@ -36,6 +37,7 @@ public class LoginServlet extends HttpServlet {
                     String[] userInfo = new String(bytes).split(",");
                     req.setAttribute("username", userInfo[0]);
                     req.setAttribute("password", userInfo[1]);
+                    break;
                 }
             }
         }
@@ -52,13 +54,17 @@ public class LoginServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/user/index");
             return;
         }
-        if (username.equalsIgnoreCase("FPT") && password.equals("poly")) {
+
+        var optionalUser = userService.checkLogin(username, password);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
             req.setAttribute("message", "Login successfully!");
+
             // lưu thông tin user vào session
-            req.getSession().setAttribute("username", username);
-            req.getSession().setAttribute("password", password);
-            //req.setAttribute("username", username);
-            //req.setAttribute("password", password);
+            req.getSession().setAttribute("user", user);
+
+            // Xử lý remember me
             if (remember != null) {
                 byte[] bytes = (username + "," + password).getBytes();
                 String userInfo = Base64.getEncoder().encodeToString(bytes);
@@ -68,7 +74,7 @@ public class LoginServlet extends HttpServlet {
 
                 // Gửi về trình duyệt
                 resp.addCookie(cookie); // cookie
-            } else { // xoa Cookie
+            } else { // xoa Cookie nếu không tích vào remember me
                 Cookie[] cookies = req.getCookies();
                 if (cookies != null) {
                     for (Cookie cookie : cookies) {
@@ -81,9 +87,16 @@ public class LoginServlet extends HttpServlet {
                     }
                 }
             }
+            // Phân quyền phóng viên và admin khi đăng nhập
+            if (user.isRole()) {
+                resp.sendRedirect(req.getContextPath() + "/admin/index");
+            } else {
+                resp.sendRedirect(req.getContextPath() + "/reporter/index");
+            }
+            return;
         } else {
             req.setAttribute("message", "Invalid login info!");
+            req.getRequestDispatcher("/views/pages/auth/login.jsp").forward(req, resp);
         }
-        req.getRequestDispatcher("/views/pages/auth/login.jsp").forward(req, resp);
     }
 }
