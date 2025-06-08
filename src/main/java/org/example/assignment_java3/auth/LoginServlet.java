@@ -6,12 +6,24 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.assignment_java3.DAO.DAOImpl.UserDAOImpl;
+import org.example.assignment_java3.DAO.UserDAO;
+import org.example.assignment_java3.service.UserService;
+import org.example.assignment_java3.service.serviceImpl.UserServiceImpl;
 
 import java.io.IOException;
 import java.util.Base64;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
+    private UserService userService;
+
+    @Override
+    public void init() throws ServletException {
+        UserDAO userDAO = new UserDAOImpl();
+        this.userService = new UserServiceImpl(userDAO);
+    }
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
@@ -35,6 +47,11 @@ public class LoginServlet extends HttpServlet {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String remember = req.getParameter("remember");
+        String action = req.getParameter("action");
+        if ("guest".equals(action)) {
+            resp.sendRedirect(req.getContextPath() + "/user/index");
+            return;
+        }
         if (username.equalsIgnoreCase("FPT") && password.equals("poly")) {
             req.setAttribute("message", "Login successfully!");
             // lưu thông tin user vào session
