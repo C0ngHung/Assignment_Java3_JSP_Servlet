@@ -5,6 +5,8 @@ import org.example.assignment_java3.DAO.UserDAO;
 import org.example.assignment_java3.entity.User;
 import org.example.assignment_java3.service.UserService;
 
+import java.util.Optional;
+
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -19,4 +21,16 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
+    @Override
+    public Optional<User> checkLogin(String username, String password) {
+        try {
+            return userDAO.checkLogin(username, password);
+        } catch (RuntimeException e) {
+            System.out.println("Lỗi khi lấy user: " + e.getMessage());
+            return Optional.empty();
+        }
+    }
+
+
 }

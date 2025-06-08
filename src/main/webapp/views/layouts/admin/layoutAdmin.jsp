@@ -5,7 +5,7 @@
 
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Trang Admin</title>
+    <title>Trang Quản Trị</title>
 </head>
 
 <body class="bg-gray-100">

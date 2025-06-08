@@ -3,6 +3,7 @@ package org.example.assignment_java3.DAO;
 import org.example.assignment_java3.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDAO {
 
@@ -15,6 +16,8 @@ public interface UserDAO {
     int deleteUser(String id);
 
     List<User> getAllUsers();
+
+    Optional<User> checkLogin(String username, String password);
 
 
 }

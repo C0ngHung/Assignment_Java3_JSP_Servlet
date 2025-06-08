@@ -7,14 +7,16 @@ import org.example.assignment_java3.utils.JdbcHelper;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserDAOImpl implements UserDAO {
 
-    private static final String SQL_INSERT_USER = "INSERT INTO users (id, password, fullName, birthday, gender, mobile, email, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_INSERT_USER = "INSERT INTO users (id, password, fullName, birthdate, gender, mobile, email, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_GET_USER_BY_ID = "SELECT * FROM users WHERE id = ?";
-    private static final String SQL_UPDATE_USER = "UPDATE users SET password = ?, fullName = ?, birthday = ?, gender = ?, mobile = ?, email = ?, role = ? WHERE id = ?";
+    private static final String SQL_UPDATE_USER = "UPDATE users SET password = ?, fullName = ?, birthdate = ?, gender = ?, mobile = ?, email = ?, role = ? WHERE id = ?";
     private static final String SQL_DELETE_USER = "DELETE FROM users WHERE id = ?";
     private static final String SQL_GET_ALL_USERS = "SELECT * FROM users";
+    private static final String SQL_GET_USERS_BY_USERNAME_PASSWORD = "SELECT * FROM users WHERE id = ? AND password = ?";
 
 
     private User mapUserFromResultSetToUser(ResultSet rs) {
@@ -23,7 +25,7 @@ public class UserDAOImpl implements UserDAO {
             user.setId(rs.getString("id"));
             user.setPassword(rs.getString("password"));
             user.setFullName(rs.getString("fullName"));
-            user.setBirthday(rs.getDate("birthday"));
+            user.setBirthdate(rs.getDate("birthdate"));
             user.setGender(rs.getBoolean("gender"));
             user.setMobile(rs.getString("mobile"));
             user.setEmail(rs.getString("email"));
@@ -43,7 +45,7 @@ public class UserDAOImpl implements UserDAO {
                 user.getId(),
                 user.getPassword(),
                 user.getFullName(),
-                user.getBirthday(),
+                user.getBirthdate(),
                 user.isGender(),
                 user.getMobile(),
                 user.getEmail(),
@@ -69,7 +71,7 @@ public class UserDAOImpl implements UserDAO {
         int row = JdbcHelper.update(SQL_UPDATE_USER,
                 user.getPassword(),
                 user.getFullName(),
-                user.getBirthday(),
+                user.getBirthdate(),
                 user.isGender(),
                 user.getMobile(),
                 user.getEmail(),
@@ -92,5 +94,15 @@ public class UserDAOImpl implements UserDAO {
             }
             return userList;
         });
+    }
+
+    @Override
+    public Optional<User> checkLogin(String username, String password) {
+        return Optional.ofNullable(JdbcHelper.query(SQL_GET_USERS_BY_USERNAME_PASSWORD, rs -> {
+            if (rs.next()) {
+                return mapUserFromResultSetToUser(rs);
+            }
+            return null;
+        }, username, password));
     }
 }
