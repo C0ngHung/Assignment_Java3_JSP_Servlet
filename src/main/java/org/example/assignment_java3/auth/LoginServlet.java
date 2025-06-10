@@ -64,6 +64,10 @@ public class LoginServlet extends HttpServlet {
             // lưu thông tin user vào session
             req.getSession().setAttribute("user", user);
 
+            // Lưu role vào session để phân quyền nav
+            String role = user.isRole() ? "admin" : "reporter";
+            req.getSession().setAttribute("currentUserRole", role);
+
             // Xử lý remember me
             if (remember != null) {
                 byte[] bytes = (username + "," + password).getBytes();
