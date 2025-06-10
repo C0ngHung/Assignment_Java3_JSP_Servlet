@@ -15,6 +15,6 @@ public class IndexReporterServlet extends HttpServlet {
         throws IOException, ServletException {
         String page = "/views/pages/reporter/news.jsp";
         req.setAttribute("page", page);
-        req.getRequestDispatcher("/views/layouts/reporter/layoutReporter.jsp").forward(req, resp);
+        req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
     }
 }
