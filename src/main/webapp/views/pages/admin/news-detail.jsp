@@ -46,7 +46,7 @@
         <ul class="list-disc list-inside space-y-2 text-blue-600">
             <c:forEach var="relatedNews" items="${newsList}">
                 <li>
-                    <a href="${pageContext.request.contextPath}/user/news-detail?id=${relatedNews.id}&categoryId=${relatedNews.categoryId}"
+                    <a href="${pageContext.request.contextPath}/${sessionScope.currentUserRole}/news-detail?id=${relatedNews.id}&categoryId=${relatedNews.categoryId}"
                        class="hover:underline"> ${relatedNews.title} </a>
                 </li>
             </c:forEach>

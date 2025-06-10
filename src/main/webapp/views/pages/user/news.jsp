@@ -10,7 +10,7 @@
             <div class="flex gap-4 p-4 border-b hover:bg-gray-50 transition duration-300">
 
                 <div class="w-[120px] h-[120px] flex-shrink-0 overflow-hidden rounded-lg">
-                    <a href="${pageContext.request.contextPath}/news-detail?id=${news.id}&categoryId=${news.categoryId}"
+                    <a href="${pageContext.request.contextPath}/user/news-detail?id=${news.id}&categoryId=${news.categoryId}"
                        class="block w-full h-full group">
                         <img src="${pageContext.request.contextPath}/images/${news.image}"
                              alt="Ảnh minh họa"
@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="flex-1 space-y-2">
-                    <a href="${pageContext.request.contextPath}/news-detail?id=${news.id}&categoryId=${news.categoryId}" class="block group">
+                    <a href="${pageContext.request.contextPath}/user/news-detail?id=${news.id}&categoryId=${news.categoryId}" class="block group">
                         <h2 class="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transform transition-all duration-300 group-hover:scale-[1.02] origin-left">
                                 ${news.title}
                         </h2>

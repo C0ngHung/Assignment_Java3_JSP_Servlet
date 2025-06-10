@@ -1,4 +1,4 @@
-package org.example.assignment_java3.user.controller;
+package org.example.assignment_java3.reporter.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,9 +11,8 @@ import org.example.assignment_java3.entity.News;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/user/news-detail")
+@WebServlet("/reporter/news-detail")
 public class NewsDetailServlet extends BaseNewsServlet {
-
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
         // Lấy id và categoryId trên url từ param
@@ -33,7 +32,7 @@ public class NewsDetailServlet extends BaseNewsServlet {
         updateHistoryView(session, id);
 
         // Khai báo trang news-detail.jsp để hiển thị dữ liệu
-        String page = "/views/pages/user/news-detail.jsp";
+        String page = "/views/pages/admin/news-detail.jsp";
 
         // Add Lấy Attribute chung cho trang news-detail.jsp
         addCommonNewsAttributes(req);
@@ -41,6 +40,6 @@ public class NewsDetailServlet extends BaseNewsServlet {
         req.setAttribute("news", news);
         req.setAttribute("newsList", newsList);
         req.setAttribute("page", page);
-        req.getRequestDispatcher("/views/layouts/user/layoutUser.jsp").forward(req, resp);
+        req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
     }
 }

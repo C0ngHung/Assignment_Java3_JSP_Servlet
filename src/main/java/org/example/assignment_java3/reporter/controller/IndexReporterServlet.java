@@ -5,15 +5,26 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.example.assignment_java3.common.controller.BaseNewsServlet;
+import org.example.assignment_java3.entity.News;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/reporter/index")
-public class IndexReporterServlet extends HttpServlet {
+public class IndexReporterServlet extends BaseNewsServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         throws IOException, ServletException {
-        String page = "/views/pages/reporter/news.jsp";
+
+        // Lấy danh sách tin tức
+        List<News> newsList = newsService.getAllNewsByHome();
+        String page = "/views/pages/admin/news.jsp";
+
+        // lay attribute chung cho trang news.jsp
+        addCommonNewsAttributes(req);
+
+        req.setAttribute("newsList", newsList);
         req.setAttribute("page", page);
         req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
     }

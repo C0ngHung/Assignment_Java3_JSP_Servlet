@@ -83,7 +83,7 @@ public class LoginServlet extends HttpServlet {
                 if (cookies != null) {
                     for (Cookie cookie : cookies) {
                         if (cookie.getName().equals("user")) {
-                            cookie.setMaxAge(0); // hiệu lực 30 ngày
+                            cookie.setMaxAge(0); // xóa cookie
                             cookie.setPath("/");
                             resp.addCookie(cookie);
                             break;
