@@ -16,7 +16,7 @@
                 </a>
             </li>
             <li>
-                <a href="${pageContext.request.contextPath}/${sessionScope.currentUserRole}/news"
+                <a href="${pageContext.request.contextPath}/${sessionScope.currentUserRole}/news-management"
                    class="flex items-center space-x-2 hover:bg-blue-500 hover:shadow-md px-4 py-2.5 rounded-lg transition-all duration-200 ease-in-out group">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:scale-110 transition-transform"
                          fill="none" viewBox="0 0 24 24" stroke="currentColor">

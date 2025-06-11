@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            req.setAttribute("message", "Login successfully!");
+            req.setAttribute("message", "Đăng nhập thành công!");
 
             // lưu thông tin user vào session
             req.getSession().setAttribute("user", user);
@@ -99,7 +99,7 @@ public class LoginServlet extends HttpServlet {
             }
             return;
         } else {
-            req.setAttribute("message", "Invalid login info!");
+            req.setAttribute("message", "Tài khoản hoặc mật khẩu không đúng!");
             req.getRequestDispatcher("/views/pages/auth/login.jsp").forward(req, resp);
         }
     }

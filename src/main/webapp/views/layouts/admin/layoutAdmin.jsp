@@ -20,12 +20,9 @@
     </nav>
 
     <div class="flex max-w-[1200px] mx-auto min-h-screen">
-        <main class="w-3/4 min-h-screen">
+        <main class="w-full min-h-screen">
 			<jsp:include page="${componentPath}/main.jsp" />
 		</main>
-		<aside class="w-1/4 min-h-screen">
-			<jsp:include page="${componentPath}/aside.jsp" />
-		</aside>
     </div>
 
     <footer>

@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.assignment_java3.common.controller.BaseNewsServlet;
+import org.example.assignment_java3.entity.Category;
 import org.example.assignment_java3.entity.News;
 
 import java.io.IOException;
@@ -27,6 +28,9 @@ public class NewsDetailServlet extends BaseNewsServlet {
         // Cập nhật lượt xem cho tin tức
         newsService.updateViewCount(id);
 
+        // Lấy tất cả danh sách loại tin
+        List<Category> categoryList = categoryService.getAllCategory();
+
         // Cập nhật lịch sử lượt xem cho người dùng
         HttpSession session = req.getSession();
         session.setMaxInactiveInterval(30);
@@ -39,8 +43,9 @@ public class NewsDetailServlet extends BaseNewsServlet {
         addCommonNewsAttributes(req);
 
         req.setAttribute("news", news);
-        req.setAttribute("newsList", newsList);
         req.setAttribute("page", page);
+        req.setAttribute("newsList", newsList);
+        req.setAttribute("categoryList", categoryList);
         req.getRequestDispatcher("/views/layouts/user/layoutUser.jsp").forward(req, resp);
     }
 }

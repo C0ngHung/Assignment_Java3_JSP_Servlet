@@ -4,10 +4,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.example.assignment_java3.DAO.CategoryDAO;
+import org.example.assignment_java3.DAO.DAOImpl.CategoryDAOImpl;
 import org.example.assignment_java3.DAO.DAOImpl.NewsDAOImpl;
 import org.example.assignment_java3.DAO.NewsDAO;
 import org.example.assignment_java3.entity.News;
+import org.example.assignment_java3.service.CategoryService;
 import org.example.assignment_java3.service.NewsService;
+import org.example.assignment_java3.service.serviceImpl.CategoryServiceImpl;
 import org.example.assignment_java3.service.serviceImpl.NewsServiceImpl;
 
 
@@ -17,6 +21,7 @@ import java.util.List;
 public abstract class BaseNewsServlet extends HttpServlet {
     // Khai báo các biến
     protected NewsService newsService;
+    protected CategoryService categoryService;
     private static final int MAX_HISTORY_SIZE = 5;
     protected static final String HISTORY_VIEW_SESSION_KEY = "historyView";
 
@@ -24,6 +29,8 @@ public abstract class BaseNewsServlet extends HttpServlet {
     public void init() throws ServletException {
         NewsDAO newsDAO = new NewsDAOImpl();
         this.newsService = new NewsServiceImpl(newsDAO);
+        CategoryDAO categoryDAO = new CategoryDAOImpl();
+        this.categoryService = new CategoryServiceImpl(categoryDAO);
     }
 
     protected void addCommonNewsAttributes(HttpServletRequest req) {

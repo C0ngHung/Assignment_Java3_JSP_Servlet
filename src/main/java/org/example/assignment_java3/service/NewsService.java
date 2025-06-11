@@ -28,4 +28,6 @@ public interface NewsService {
 
     List<News> getNewsByCategory(String categoryId);
 
+    List<News> getNewsByAuthor(String author);
+
 }

@@ -122,4 +122,14 @@ public class NewsServiceImpl implements NewsService {
             return null;
         }
     }
+
+    @Override
+    public List<News> getNewsByAuthor(String author) {
+        try {
+            return newsDAO.getNewsByAuthor(author);
+        } catch (RuntimeException e) {
+            System.out.println("Lỗi khi lấy tin tức theo tài khoản: " + e.getMessage());
+            return null;
+        }
+    }
 }
