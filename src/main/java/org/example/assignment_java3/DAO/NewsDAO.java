@@ -27,4 +27,6 @@ public interface NewsDAO {
     List<News> getNewsByCategory(String categoryId);
 
     boolean updateViewCount(String id);
+
+    List<News> getNewsByAuthor(String author);
 }

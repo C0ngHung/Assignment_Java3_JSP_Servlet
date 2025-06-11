@@ -21,6 +21,7 @@ public class NewsDAOImpl implements NewsDAO {
     private static final String SQL_GET_TOP_5_VIEWS_COUNT = "SELECT TOP 5 * FROM news ORDER BY viewCount DESC";
     private static final String SQL_UPDATE_VIEW_COUNT = "UPDATE news SET viewCount = viewCount + 1 WHERE id = ?";
     private static final String SQL_GET_ALL_NEWS_BY_CATEGORY_ID = "SELECT * FROM news WHERE categoryId = ?";
+    private static final String SQL_GET_ALL_NEWS_BY_AUTHOR = "SELECT * FROM news WHERE author = ?";
 
     private News mapNewsFromResultSetToNews(ResultSet rs) {
         try {
@@ -184,5 +185,16 @@ public class NewsDAOImpl implements NewsDAO {
         }
         int row = JdbcHelper.update(SQL_UPDATE_VIEW_COUNT, id);
         return row > 0;
+    }
+
+    @Override
+    public List<News> getNewsByAuthor(String author) {
+        return JdbcHelper.query(SQL_GET_ALL_NEWS_BY_AUTHOR, rs -> {
+            List<News> newsList = new ArrayList<>();
+            while (rs.next()) {
+                newsList.add(mapNewsFromResultSetToNews(rs));
+            }
+            return newsList;
+        }, author);
     }
 }
