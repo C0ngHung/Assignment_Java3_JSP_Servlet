@@ -63,18 +63,33 @@
                         <span class="uppercase tracking-wide">Bản tin</span>
                     </a>
                 </li>
+                <li>
+                    <a href="${pageContext.request.contextPath}/${sessionScope.currentUserRole}/profile"
+                       class="flex items-center space-x-2 hover:bg-blue-500 hover:shadow-md px-4 py-2.5 rounded-lg transition-all duration-200 ease-in-out group">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-4 w-4 group-hover:scale-110 transition-transform"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        <span class="uppercase tracking-wide">Quản Lý Tài Khoản</span>
+                    </a>
+                </li>
             </c:if>
-            <li>
-                <a href="${pageContext.request.contextPath}/${sessionScope.currentUserRole}/profile"
-                   class="flex items-center space-x-2 hover:bg-blue-500 hover:shadow-md px-4 py-2.5 rounded-lg transition-all duration-200 ease-in-out group">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:scale-110 transition-transform"
-                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                    </svg>
-                    <span class="uppercase tracking-wide">Hồ sơ</span>
-                </a>
-            </li>
+            <c:if test="${sessionScope.currentUserRole == 'reporter'}">
+                <li>
+                    <a href="${pageContext.request.contextPath}/${sessionScope.currentUserRole}/profile"
+                       class="flex items-center space-x-2 hover:bg-blue-500 hover:shadow-md px-4 py-2.5 rounded-lg transition-all duration-200 ease-in-out group">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="h-4 w-4 group-hover:scale-110 transition-transform"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        <span class="uppercase tracking-wide">Hồ Sơ</span>
+                    </a>
+                </li>
+            </c:if>
         </ul>
         <!-- Xin chào, người dùng BÊN PHẢI -->
         <div class="relative group flex items-center ml-6">
@@ -96,7 +111,7 @@
             <!-- Invisible hover area -->
             <div class="absolute top-full left-0 w-full h-4 z-10 group-hover:block hidden"></div>
             <!-- Dropdown menu -->
-            <ul class="absolute right-0 top-full mt-2 w-48 bg-white text-gray-800 rounded-xl shadow-xl border border-gray-100 hidden group-hover:block z-20 overflow-hidden">
+            <ul class="absolute right-0 top-full mt-2 w-48 bg-white text-gray-800 rounded-xl shadow-xl border border-gray-100 hidden group-hover:block z-50 overflow-hidden">
                 <li class="border-b border-gray-100 last:border-b-0">
                     <a href="${pageContext.request.contextPath}/logout"
                        class="flex items-center space-x-3 px-4 py-3 hover:bg-red-50 hover:text-red-600 transition-all duration-200 ease-in-out">
