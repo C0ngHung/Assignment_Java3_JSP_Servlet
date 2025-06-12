@@ -14,23 +14,50 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(Category category) {
-        return null;
+        try {
+            return categoryDAO.createCategory(category);
+        } catch (Exception e) {
+            System.out.println("Lỗi khi tạo loại tin: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
     public Category getCategoryById(String id) {
-        return null;
+        try {
+            return categoryDAO.getCategoryById(id);
+        } catch (RuntimeException e) {
+            System.out.println("Lỗi khi lấy loại tin: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
     public Category updateCategory(Category category) {
-        return null;
+        try {
+            return categoryDAO.updateCategory(category);
+        } catch (RuntimeException e) {
+            System.out.println("Lỗi khi cap nhật loại tin: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
     public int deleteCategory(String id) {
-        return 0;
+        if (id == null || id.trim().isEmpty()) {
+            System.err.println("ID loại tin không hợp lệ khi xóa.");
+            return 0;
+        }
+
+        try {
+            return categoryDAO.deleteCategory(id);
+        } catch (Exception e) {
+            System.err.println("Lỗi khi xóa loại tin với ID: " + id + " - " + e.getMessage());
+            e.printStackTrace();
+            return 0;
+        }
     }
+
 
     @Override
     public List<Category> getAllCategory() {
