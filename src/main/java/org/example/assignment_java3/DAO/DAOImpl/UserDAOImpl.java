@@ -64,9 +64,9 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User updateUser(User user) {
+    public boolean updateUser(User user) {
         if (user == null) {
-            return null;
+            return false;
         }
         int row = JdbcHelper.update(SQL_UPDATE_USER,
                 user.getPassword(),
@@ -77,7 +77,7 @@ public class UserDAOImpl implements UserDAO {
                 user.getEmail(),
                 user.isRole(),
                 user.getId());
-        return row > 0 ? user : null;
+        return row > 0;
     }
 
     @Override
