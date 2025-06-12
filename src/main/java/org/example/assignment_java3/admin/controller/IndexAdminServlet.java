@@ -15,6 +15,8 @@ import java.util.List;
 public class IndexAdminServlet extends BaseNewsServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         // Lấy danh sách tin tức
+
+
         List<News> newsList = newsService.getAllNewsByHome();
         String page = "/views/pages/admin/news.jsp";
 

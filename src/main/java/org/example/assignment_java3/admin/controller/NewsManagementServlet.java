@@ -54,9 +54,9 @@ public class NewsManagementServlet extends HttpServlet {
         }
 
         String author = user.getId();
-        List<News> newsList = newsService.getNewsByAuthor(author);
+        List<News> newsList = newsService.getAllNews();
         List<Category> categoryList = categoryService.getAllCategory();
-        String page = "/views/pages/reporter/news-management.jsp";
+        String page = "/views/pages/admin/news-management.jsp";
 
         req.setAttribute("page", page);
         req.setAttribute("newsList", newsList);
@@ -101,7 +101,7 @@ public class NewsManagementServlet extends HttpServlet {
             }
             List<Category> categoryList = categoryService.getAllCategory();
             List<News> newsList = newsService.getAllNews();
-            String page = "/views/pages/reporter/news-management.jsp";
+            String page = "/views/pages/admin/news-management.jsp";
 
             req.setAttribute("editNews", news);
             req.setAttribute("categoryList", categoryList);
@@ -131,6 +131,11 @@ public class NewsManagementServlet extends HttpServlet {
         String viewCountStr = req.getParameter("viewCount");
         String categoryId = req.getParameter("categoryId");
         String content = req.getParameter("content");
+        String home = req.getParameter("home");
+        boolean homeValue = false;
+        if (home != null) {
+            homeValue = "1".equals(home) || "true".equalsIgnoreCase(home);
+        }
         int viewCount = (viewCountStr != null && !viewCountStr.isEmpty()) ? Integer.parseInt(viewCountStr) : 0;
 
         // Kiểm tra các tham số bắt buộc cho create/update
@@ -148,7 +153,7 @@ public class NewsManagementServlet extends HttpServlet {
             String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
             String uploadPath = getServletContext().getRealPath("/images");
             File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) uploadDir.mkdir();
+            if (!uploadDir.exists()) uploadDir.mkdirs();
             String fullPath = uploadPath + File.separator + fileName;
             imagePart.write(fullPath);
             imageFileName = fileName;
@@ -163,10 +168,12 @@ public class NewsManagementServlet extends HttpServlet {
                 news.setCategoryId(categoryId);
                 news.setContent(content);
                 news.setAuthor(author);
+                news.setHome(homeValue);
                 if (imageFileName != null) {
                     news.setImage(imageFileName);
                 }
                 newsService.createNews(news);
+                req.setAttribute("success", "Tạo mới tin thành công!");
                 break;
             }
             case "update": {
@@ -189,10 +196,12 @@ public class NewsManagementServlet extends HttpServlet {
                 news.setCategoryId(categoryId);
                 news.setContent(content);
                 news.setAuthor(author);
+                news.setHome(homeValue);
                 if (imageFileName != null) {
                     news.setImage(imageFileName);
                 }
                 newsService.updateNews(news);
+                req.setAttribute("success", "Cập nhật tin thức thành công");
                 break;
             }
             case "delete": {
@@ -203,6 +212,7 @@ public class NewsManagementServlet extends HttpServlet {
                     return;
                 }
                 newsService.deleteNews(id);
+                req.setAttribute("success", "Xóa tin thức thành công");
                 break;
             }
             case "reset": {

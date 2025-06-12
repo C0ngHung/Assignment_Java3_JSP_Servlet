@@ -10,10 +10,10 @@ import java.util.List;
 
 public class CategoryDAOImpl implements CategoryDAO {
 
-    private static final String SQL_INSERT_CATEGORY = "INSERT INTO category (id, name) VALUES (?, ?)";
-    private static final String SQL_GET_CATEGORY_BY_ID = "SELECT * FROM category WHERE id = ?";
-    private static final String SQL_UPDATE_CATEGORY = "UPDATE category SET name = ? WHERE id = ?";
-    private static final String SQL_DELETE_CATEGORY = "DELETE FROM category WHERE id = ?";
+    private static final String SQL_INSERT_CATEGORY = "INSERT INTO categories (name) VALUES (?)";
+    private static final String SQL_GET_CATEGORY_BY_ID = "SELECT * FROM categories WHERE id = ?";
+    private static final String SQL_UPDATE_CATEGORY = "UPDATE categories SET name = ? WHERE id = ?";
+    private static final String SQL_DELETE_CATEGORY = "DELETE FROM categories WHERE id = ?";
     private static final String SQL_GET_ALL_CATEGORY = "SELECT * FROM categories";
 
     private Category mapCategoryFromResultSetToCategory(ResultSet rs) {
@@ -33,7 +33,6 @@ public class CategoryDAOImpl implements CategoryDAO {
             return null;
         }
         int row = JdbcHelper.update(SQL_INSERT_CATEGORY,
-                category.getId(),
                 category.getName());
         return row > 0 ? category : null;
     }
