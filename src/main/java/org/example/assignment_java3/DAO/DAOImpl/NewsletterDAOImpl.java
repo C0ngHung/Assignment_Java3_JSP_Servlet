@@ -11,7 +11,7 @@ import java.util.List;
 public class NewsletterDAOImpl implements NewsletterDAO {
 
     private static final String SQL_INSERT_NEWSLETTER = "INSERT INTO newsletter (email, enable) VALUES (?, ?)";
-    private static final String SQL_GET_NEWSLETTER_BY_ID = "SELECT * FROM newsletter WHERE email = ?";
+    private static final String SQL_GET_NEWSLETTER_BY_EMAIL = "SELECT * FROM newsletter WHERE email = ?";
     private static final String SQL_UPDATE_NEWSLETTER = "UPDATE newsletter SET enable = ? WHERE email = ?";
     private static final String SQL_DELETE_NEWSLETTER = "DELETE FROM newsletter WHERE email = ?";
     private static final String SQL_GET_ALL_NEWSLETTER = "SELECT * FROM newsletter";
@@ -37,21 +37,21 @@ public class NewsletterDAOImpl implements NewsletterDAO {
     }
 
     @Override
-    public Newsletter getNewsletterById(String id) {
-        return JdbcHelper.query(SQL_GET_NEWSLETTER_BY_ID, rs -> {
+    public Newsletter getNewsletterByEmail(String email) {
+        return JdbcHelper.query(SQL_GET_NEWSLETTER_BY_EMAIL, rs -> {
             if (rs.next()) {
                 return mapNewsletterFromResultSetToNewsletter(rs);
             }
             return null;
-        });
+        }, email);
     }
 
     @Override
     public Newsletter updateNewsletter(Newsletter newsletter) {
         if (newsletter == null) return null;
         int row = JdbcHelper.update(SQL_UPDATE_NEWSLETTER,
-                newsletter.getEmail(),
-                newsletter.isEnable());
+                newsletter.isEnable(),
+                newsletter.getEmail());
         return row > 0 ? newsletter : null;
     }
 
