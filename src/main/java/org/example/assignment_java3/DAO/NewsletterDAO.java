@@ -8,7 +8,7 @@ public interface NewsletterDAO {
 
     Newsletter createNewsletter(Newsletter newsletter);
 
-    Newsletter getNewsletterById(String id);
+    Newsletter getNewsletterByEmail(String email);
 
     Newsletter updateNewsletter(Newsletter newsletter);
 
