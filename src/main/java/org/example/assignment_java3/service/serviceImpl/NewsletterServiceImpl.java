@@ -1,7 +1,8 @@
 package org.example.assignment_java3.service.serviceImpl;
 
 import lombok.AllArgsConstructor;
-import org.example.assignment_java3.DAO.NewsletterDAO;
+
+import org.example.assignment_java3.dao.NewsletterDAO;
 import org.example.assignment_java3.entity.Newsletter;
 import org.example.assignment_java3.service.NewsletterService;
 

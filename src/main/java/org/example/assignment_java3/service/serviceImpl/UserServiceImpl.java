@@ -1,7 +1,7 @@
 package org.example.assignment_java3.service.serviceImpl;
 
 import lombok.AllArgsConstructor;
-import org.example.assignment_java3.DAO.UserDAO;
+import org.example.assignment_java3.dao.UserDAO;
 import org.example.assignment_java3.entity.User;
 import org.example.assignment_java3.service.UserService;
 

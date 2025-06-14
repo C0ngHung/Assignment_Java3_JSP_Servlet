@@ -1,7 +1,7 @@
 package org.example.assignment_java3.service.serviceImpl;
 
 import lombok.AllArgsConstructor;
-import org.example.assignment_java3.DAO.NewsDAO;
+import org.example.assignment_java3.dao.NewsDAO;
 import org.example.assignment_java3.entity.News;
 import org.example.assignment_java3.service.NewsService;
 

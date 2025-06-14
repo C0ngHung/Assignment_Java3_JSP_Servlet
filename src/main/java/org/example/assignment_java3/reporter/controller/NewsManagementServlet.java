@@ -7,10 +7,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import org.example.assignment_java3.DAO.CategoryDAO;
-import org.example.assignment_java3.DAO.DAOImpl.CategoryDAOImpl;
-import org.example.assignment_java3.DAO.DAOImpl.NewsDAOImpl;
-import org.example.assignment_java3.DAO.NewsDAO;
+import org.example.assignment_java3.dao.CategoryDAO;
+import org.example.assignment_java3.dao.impl.CategoryDAOImpl;
+import org.example.assignment_java3.dao.impl.NewsDAOImpl;
+import org.example.assignment_java3.dao.NewsDAO;
 import org.example.assignment_java3.entity.Category;
 import org.example.assignment_java3.entity.News;
 import org.example.assignment_java3.entity.User;
@@ -20,9 +20,8 @@ import org.example.assignment_java3.service.serviceImpl.CategoryServiceImpl;
 import org.example.assignment_java3.service.serviceImpl.NewsServiceImpl;
 import org.example.assignment_java3.utils.ImageUtil;
 
-import java.io.File;
+
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
