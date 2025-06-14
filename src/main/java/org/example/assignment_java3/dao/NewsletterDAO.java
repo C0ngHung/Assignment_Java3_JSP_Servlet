@@ -1,4 +1,4 @@
-package org.example.assignment_java3.DAO;
+package org.example.assignment_java3.dao;
 
 import org.example.assignment_java3.entity.Newsletter;
 

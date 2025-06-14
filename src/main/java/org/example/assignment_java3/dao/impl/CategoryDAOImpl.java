@@ -1,6 +1,8 @@
-package org.example.assignment_java3.DAO.DAOImpl;
+package org.example.assignment_java3.dao.impl;
 
-import org.example.assignment_java3.DAO.CategoryDAO;
+
+import lombok.AllArgsConstructor;
+import org.example.assignment_java3.dao.CategoryDAO;
 import org.example.assignment_java3.entity.Category;
 import org.example.assignment_java3.utils.JdbcHelper;
 
@@ -8,6 +10,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 public class CategoryDAOImpl implements CategoryDAO {
 
     private static final String SQL_INSERT_CATEGORY = "INSERT INTO categories (name) VALUES (?)";

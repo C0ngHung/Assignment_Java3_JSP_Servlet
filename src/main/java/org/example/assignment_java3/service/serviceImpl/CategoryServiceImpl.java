@@ -1,7 +1,8 @@
 package org.example.assignment_java3.service.serviceImpl;
 
 import lombok.AllArgsConstructor;
-import org.example.assignment_java3.DAO.CategoryDAO;
+
+import org.example.assignment_java3.dao.CategoryDAO;
 import org.example.assignment_java3.entity.Category;
 import org.example.assignment_java3.service.CategoryService;
 
@@ -11,6 +12,8 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryDAO categoryDAO;
+
+
 
     @Override
     public Category createCategory(Category category) {

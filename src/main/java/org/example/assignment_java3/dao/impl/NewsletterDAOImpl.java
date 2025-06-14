@@ -1,6 +1,7 @@
-package org.example.assignment_java3.DAO.DAOImpl;
+package org.example.assignment_java3.dao.impl;
 
-import org.example.assignment_java3.DAO.NewsletterDAO;
+
+import org.example.assignment_java3.dao.NewsletterDAO;
 import org.example.assignment_java3.entity.Newsletter;
 import org.example.assignment_java3.utils.JdbcHelper;
 

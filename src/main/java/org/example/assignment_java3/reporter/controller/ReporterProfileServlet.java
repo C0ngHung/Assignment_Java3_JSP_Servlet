@@ -7,8 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import org.example.assignment_java3.DAO.DAOImpl.UserDAOImpl;
-import org.example.assignment_java3.DAO.UserDAO;
+import org.example.assignment_java3.dao.impl.UserDAOImpl;
+import org.example.assignment_java3.dao.UserDAO;
 import org.example.assignment_java3.entity.User;
 import org.example.assignment_java3.service.UserService;
 import org.example.assignment_java3.service.serviceImpl.UserServiceImpl;
