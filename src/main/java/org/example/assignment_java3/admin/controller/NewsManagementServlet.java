@@ -18,6 +18,7 @@ import org.example.assignment_java3.service.CategoryService;
 import org.example.assignment_java3.service.NewsService;
 import org.example.assignment_java3.service.serviceImpl.CategoryServiceImpl;
 import org.example.assignment_java3.service.serviceImpl.NewsServiceImpl;
+import org.example.assignment_java3.utils.ImageUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -148,16 +149,8 @@ public class NewsManagementServlet extends HttpServlet {
 
         // Xử lý file ảnh
         Part imagePart = req.getPart("image");
-        String imageFileName = null;
-        if (imagePart != null && imagePart.getSize() > 0) {
-            String fileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
-            String uploadPath = getServletContext().getRealPath("/images");
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) uploadDir.mkdirs();
-            String fullPath = uploadPath + File.separator + fileName;
-            imagePart.write(fullPath);
-            imageFileName = fileName;
-        }
+        String imageFileName = ImageUtil.save(imagePart, getServletContext());
+
 
         switch (action) {
             case "create": {
