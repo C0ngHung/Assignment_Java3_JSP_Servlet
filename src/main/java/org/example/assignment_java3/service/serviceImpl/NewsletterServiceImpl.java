@@ -58,4 +58,22 @@ public class NewsletterServiceImpl implements NewsletterService {
             throw new RuntimeException("Lỗi khi lấy danh sách email nhận bản tin: " + e.getMessage(), e);
         }
     }
+
+    @Override
+    public boolean isEmailExists(String email) {
+        try {
+            return newsletterDAO.isEmailExists(email);
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi kiểm tra email tồn tại: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public List<Newsletter> getAllNewsletterByEnabled() {
+        try {
+            return newsletterDAO.getAllNewsletterByEnabled();
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi lấy danh sách email nhận bản tin đã kích hoạt: " + e.getMessage(), e);
+        }
+    }
 }

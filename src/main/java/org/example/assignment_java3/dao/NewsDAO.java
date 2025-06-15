@@ -29,4 +29,5 @@ public interface NewsDAO {
     boolean updateViewCount(String id);
 
     List<News> getNewsByAuthor(String author);
+
 }

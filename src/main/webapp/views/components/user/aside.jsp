@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <div class="max-w-xs mx-auto bg-white rounded-lg border border-gray-200 shadow-sm h-full relative">
+
     <!-- Top 5 Tin Mới Nhất -->
     <div class="p-5 border-b border-gray-100">
         <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
@@ -75,9 +76,9 @@
 
     <!-- Đăng ký nhận tin mới -->
     <div class="p-5 bg-gray-50 rounded-b-lg">
-        <form class="space-y-3">
+        <form action="${pageContext.request.contextPath}/user/newsletter" method="post" class="space-y-3">
             <div class="relative">
-                <input type="email"
+                <input type="email" name="email"
                        placeholder="Nhập email đăng ký nhận tin mới"
                        class="w-full px-4 py-2.5 rounded-lg text-sm text-gray-700 bg-white border border-gray-300
                               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -90,6 +91,21 @@
                            transition-all duration-200 text-sm">
                 Đăng ký nhận tin
             </button>
+
+            <!-- Hiển thị thông báo nếu có -->
+            <c:if test="${not empty sessionScope.message}">
+                <div id="toast-message"
+                     class="text-sm text-center p-3 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 shadow-sm transition-all duration-300 ease-in-out">
+                        ${sessionScope.message}
+                </div>
+                <c:remove var="message" scope="session"/>
+            </c:if>
         </form>
     </div>
 </div>
+<script>
+    setTimeout(() => {
+        const toast = document.getElementById("toast-message");
+        if (toast) toast.style.display = "none";
+    }, 3000); // 3 giây
+</script>

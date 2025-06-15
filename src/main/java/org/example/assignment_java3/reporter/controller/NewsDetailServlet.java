@@ -4,18 +4,19 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import org.example.assignment_java3.common.controller.BaseUserServlet;
+import org.example.assignment_java3.common.controller.BaseReporterServlet;
 import org.example.assignment_java3.entity.News;
 
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/reporter/news-detail")
-public class NewsDetailServlet extends BaseUserServlet {
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException, ServletException {
-        // Lấy id và categoryId trên url từ param
+public class NewsDetailServlet extends BaseReporterServlet {
+
+    @Override
+    protected void processGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        // Lấy id và categoryId từ tham số URL
         String id = req.getParameter("id");
         String categoryId = req.getParameter("categoryId");
 
@@ -26,20 +27,18 @@ public class NewsDetailServlet extends BaseUserServlet {
         // Cập nhật lượt xem cho tin tức
         newsService.updateViewCount(id);
 
-        // Cập nhật lịch sử lượt xem cho người dùng
-        HttpSession session = req.getSession();
-        session.setMaxInactiveInterval(30);
-        updateHistoryView(session, id);
-
-        // Khai báo trang news-detail.jsp để hiển thị dữ liệu
+        // Thiết lập trang JSP để hiển thị
         String page = "/views/pages/admin/news-detail.jsp";
 
-        // Add Lấy Attribute chung cho trang news-detail.jsp
-        addCommonNewsAttributes(req);
-
+        // Thiết lập các thuộc tính và forward đến layout
         req.setAttribute("news", news);
         req.setAttribute("newsList", newsList);
-        req.setAttribute("page", page);
-        req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
+        forwardToAdminLayout(req, resp, page);
+    }
+
+    @Override
+    protected void processPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        processGet(req, resp);
     }
 }

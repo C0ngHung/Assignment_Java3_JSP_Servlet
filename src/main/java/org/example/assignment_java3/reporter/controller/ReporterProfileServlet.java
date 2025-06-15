@@ -2,16 +2,11 @@ package org.example.assignment_java3.reporter.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import org.example.assignment_java3.dao.impl.UserDAOImpl;
-import org.example.assignment_java3.dao.UserDAO;
+import org.example.assignment_java3.common.controller.BaseReporterServlet;
 import org.example.assignment_java3.entity.User;
-import org.example.assignment_java3.service.UserService;
-import org.example.assignment_java3.service.serviceImpl.UserServiceImpl;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -19,27 +14,25 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @WebServlet("/reporter/profile")
-public class ReporterProfileServlet extends HttpServlet {
-
-    private UserService userService;
+public class ReporterProfileServlet extends BaseReporterServlet {
 
     @Override
-    public void init() {
-        UserDAO userDAO = new UserDAOImpl();
-        this.userService = new UserServiceImpl(userDAO);
+    protected void processGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        // Lấy user từ session (đã kiểm tra trong BaseReporterServlet)
+        User reporter = (User) req.getSession().getAttribute("user");
+        String page = "/views/pages/reporter/profile.jsp";
+
+        req.setAttribute("user", reporter);
+        forwardToAdminLayout(req, resp, page);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void processPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-
+        // Lấy user từ session
         HttpSession session = req.getSession();
         User reporter = (User) session.getAttribute("user");
-
-        if (reporter == null || reporter.isRole()) {
-            resp.sendRedirect(req.getContextPath() + "/login");
-            return;
-        }
 
         String fullName = req.getParameter("fullName");
         String birthdateStr = req.getParameter("birthdate");
@@ -57,8 +50,7 @@ public class ReporterProfileServlet extends HttpServlet {
         } catch (ParseException e) {
             req.setAttribute("error", "Ngày sinh không hợp lệ.");
             req.setAttribute("user", reporter);
-            req.setAttribute("page", "/views/pages/reporter/profile.jsp");
-            req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
+            forwardToAdminLayout(req, resp, "/views/pages/reporter/profile.jsp");
             return;
         }
 
@@ -69,21 +61,17 @@ public class ReporterProfileServlet extends HttpServlet {
 
         if (currentPassword != null && !currentPassword.isEmpty()
                 && newPassword != null && !newPassword.isEmpty()) {
-
             if (!reporter.getPassword().equals(currentPassword)) {
                 req.setAttribute("error", "Mật khẩu hiện tại không đúng.");
                 req.setAttribute("user", reporter);
-                req.setAttribute("page", "/views/pages/reporter/profile.jsp");
-                req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
+                forwardToAdminLayout(req, resp, "/views/pages/reporter/profile.jsp");
                 return;
             }
 
-            // Kiểm tra mật khẩu mới và xác nhận khớp
             if (!newPassword.equals(confirmPassword)) {
                 req.setAttribute("error", "Mật khẩu mới và xác nhận không khớp.");
                 req.setAttribute("user", reporter);
-                req.setAttribute("page", "/views/pages/reporter/profile.jsp");
-                req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
+                forwardToAdminLayout(req, resp, "/views/pages/reporter/profile.jsp");
                 return;
             }
 
@@ -100,24 +88,6 @@ public class ReporterProfileServlet extends HttpServlet {
         }
 
         req.setAttribute("user", reporter);
-        req.setAttribute("page", "/views/pages/reporter/profile.jsp");
-        req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        HttpSession session = req.getSession();
-        User reporter = (User) session.getAttribute("user");
-
-        if (reporter == null || reporter.isRole()) {
-            resp.sendRedirect(req.getContextPath() + "/login");
-            return;
-        }
-
-        req.setAttribute("user", reporter);
-        req.setAttribute("page", "/views/pages/reporter/profile.jsp");
-        req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
+        forwardToAdminLayout(req, resp, "/views/pages/reporter/profile.jsp");
     }
 }

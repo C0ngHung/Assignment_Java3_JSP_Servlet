@@ -5,7 +5,10 @@ import org.example.assignment_java3.dao.NewsDAO;
 import org.example.assignment_java3.entity.News;
 import org.example.assignment_java3.utils.JdbcHelper;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -198,4 +201,5 @@ public class NewsDAOImpl implements NewsDAO {
             return newsList;
         }, author);
     }
+
 }
