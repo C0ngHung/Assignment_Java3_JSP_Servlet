@@ -4,14 +4,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.assignment_java3.common.controller.BaseNewsServlet;
+import org.example.assignment_java3.common.controller.BaseUserServlet;
 import org.example.assignment_java3.entity.News;
 
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/reporter/index")
-public class IndexReporterServlet extends BaseNewsServlet {
+public class IndexReporterServlet extends BaseUserServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         throws IOException, ServletException {
