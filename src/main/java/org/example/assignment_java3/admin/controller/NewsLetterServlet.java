@@ -59,7 +59,7 @@ public class NewsLetterServlet extends HttpServlet {
             session.removeAttribute("error");
         }
 
-        req.setAttribute("page", "/views/pages/admin/newsletter.jsp");
+        req.setAttribute("page", "/views/pages/admin/newsletter-management.jsp");
         req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
     }
 

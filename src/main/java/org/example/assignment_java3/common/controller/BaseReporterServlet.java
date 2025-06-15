@@ -5,18 +5,23 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.example.assignment_java3.admin.controller.NewsLetterServlet;
 import org.example.assignment_java3.dao.CategoryDAO;
 import org.example.assignment_java3.dao.NewsDAO;
+import org.example.assignment_java3.dao.NewsletterDAO;
 import org.example.assignment_java3.dao.UserDAO;
 import org.example.assignment_java3.dao.impl.CategoryDAOImpl;
 import org.example.assignment_java3.dao.impl.NewsDAOImpl;
+import org.example.assignment_java3.dao.impl.NewsletterDAOImpl;
 import org.example.assignment_java3.dao.impl.UserDAOImpl;
 import org.example.assignment_java3.entity.User;
 import org.example.assignment_java3.service.CategoryService;
 import org.example.assignment_java3.service.NewsService;
+import org.example.assignment_java3.service.NewsletterService;
 import org.example.assignment_java3.service.UserService;
 import org.example.assignment_java3.service.serviceImpl.CategoryServiceImpl;
 import org.example.assignment_java3.service.serviceImpl.NewsServiceImpl;
+import org.example.assignment_java3.service.serviceImpl.NewsletterServiceImpl;
 import org.example.assignment_java3.service.serviceImpl.UserServiceImpl;
 
 import java.io.IOException;
@@ -26,6 +31,7 @@ public abstract class BaseReporterServlet extends HttpServlet {
     protected NewsService newsService;
     protected CategoryService categoryService;
     protected UserService userService;
+    protected NewsletterService newsletterService;
 
     @Override
     public void init() throws ServletException {
@@ -35,6 +41,8 @@ public abstract class BaseReporterServlet extends HttpServlet {
         this.categoryService = new CategoryServiceImpl(categoryDAO);
         UserDAO userDAO = new UserDAOImpl();
         this.userService = new UserServiceImpl(userDAO);
+        NewsletterDAO newsletterDAO = new NewsletterDAOImpl();
+        this.newsletterService = new NewsletterServiceImpl(newsletterDAO);
     }
 
     protected boolean checkReporterSession(HttpServletRequest req, HttpServletResponse resp)

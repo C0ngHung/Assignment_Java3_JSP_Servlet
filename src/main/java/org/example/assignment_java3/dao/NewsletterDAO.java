@@ -15,4 +15,8 @@ public interface NewsletterDAO {
     int deleteNewsletter(String id);
 
     List<Newsletter> getAllNewsletter();
+
+    boolean isEmailExists(String email);
+
+    List<Newsletter> getAllNewsletterByEnabled();
 }

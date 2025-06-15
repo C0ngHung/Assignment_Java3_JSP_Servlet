@@ -5,6 +5,7 @@ import org.example.assignment_java3.dao.UserDAO;
 import org.example.assignment_java3.entity.User;
 import org.example.assignment_java3.service.UserService;
 
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -62,5 +63,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public List<User> getAllUsers() {
+        try {
+            return userDAO.getAllUsers();
+        } catch (RuntimeException e) {
+            System.out.println("Lỗi khi lấy danh sách user: " + e.getMessage());
+            return null;
+        }
+    }
 
 }

@@ -16,6 +16,8 @@ public class NewsletterDAOImpl implements NewsletterDAO {
     private static final String SQL_UPDATE_NEWSLETTER = "UPDATE newsletter SET enable = ? WHERE email = ?";
     private static final String SQL_DELETE_NEWSLETTER = "DELETE FROM newsletter WHERE email = ?";
     private static final String SQL_GET_ALL_NEWSLETTER = "SELECT * FROM newsletter";
+    private static final String SQL_IS_EMAIL_EXISTS = "SELECT COUNT(*) FROM newsletter WHERE email = ?";
+    private static final String SQL_GET_ALL_NEWSLETTER_BY_ENABLED = "SELECT email FROM newsletter WHERE enable = 1;";
 
     private Newsletter mapNewsletterFromResultSetToNewsletter(ResultSet rs) {
         try {
@@ -67,6 +69,29 @@ public class NewsletterDAOImpl implements NewsletterDAO {
             List<Newsletter> newsletterList = new ArrayList<>();
             while (rs.next()) {
                 newsletterList.add(mapNewsletterFromResultSetToNewsletter(rs));
+            }
+            return newsletterList;
+        });
+    }
+
+    @Override
+    public boolean isEmailExists(String email) {
+        return JdbcHelper.query(SQL_IS_EMAIL_EXISTS, rs -> {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+            return false;
+        }, email);
+    }
+
+    @Override
+    public List<Newsletter> getAllNewsletterByEnabled() {
+        return JdbcHelper.query(SQL_GET_ALL_NEWSLETTER_BY_ENABLED, rs -> {
+            List<Newsletter> newsletterList = new ArrayList<>();
+            while (rs.next()) {
+                Newsletter newsletter = new Newsletter();
+                newsletter.setEmail(rs.getString("email"));
+                newsletterList.add(newsletter);
             }
             return newsletterList;
         });

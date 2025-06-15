@@ -46,14 +46,6 @@ public class NewsManagementServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        // Lấy user hiện tại từ session
-        User user = (User) req.getSession().getAttribute("user");
-        if (user == null) {
-            resp.sendRedirect(req.getContextPath() + "/login.jsp");
-            return;
-        }
-
-        String author = user.getId();
         List<News> newsList = newsService.getAllNews();
         List<Category> categoryList = categoryService.getAllCategory();
         String page = "/views/pages/admin/news-management.jsp";

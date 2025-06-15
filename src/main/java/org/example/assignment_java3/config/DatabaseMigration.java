@@ -3,9 +3,6 @@ package org.example.assignment_java3.config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
-import org.flywaydb.core.internal.database.base.Database;
-
-import javax.sql.DataSource;
 
 public class DatabaseMigration {
 
