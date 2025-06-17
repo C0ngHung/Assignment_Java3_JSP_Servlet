@@ -54,7 +54,7 @@ git clone https://github.com/C0ngHung/Assignment_Java3_JSP_Servlet.git
 
 ## 📌 Ghi chú
 
-* Đảm bảo database đã tạo các bảng đầy đủ các bảng.
+* Vì mình dùng bằng DB.Migration nên các bạn chỉ cần vào Hệ quản trị cơ sở dữ liệu tạo tên Project sau đó chạy dự án các bảng sẽ được tự động insert vào database nhé <3
 ---
 
 ## 🧑‍💻 Tác giả
