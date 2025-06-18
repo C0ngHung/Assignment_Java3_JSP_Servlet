@@ -16,7 +16,7 @@
         <ul class="space-y-3">
             <c:forEach var="listTop5NewsLatest" items="${listTop5NewsLatest}">
                 <li class="group">
-                    <a href="${pageContext.request.contextPath}/news-detail?id=${listTop5NewsLatest.id}&categoryId=${listTop5NewsLatest.categoryId}"
+                    <a href="${pageContext.request.contextPath}/user/news-detail?id=${listTop5NewsLatest.id}&categoryId=${listTop5NewsLatest.categoryId}"
                        class="flex items-start space-x-2 text-gray-600 group-hover:text-blue-600 transition-colors duration-200">
                         <span class="text-blue-600 mt-1">•</span>
                         <span class="flex-1 line-clamp-2">${listTop5NewsLatest.title}</span>
@@ -41,7 +41,7 @@
         <ul class="space-y-3">
             <c:forEach var="listTop5ViewsCount" items="${listTop5ViewsCount}">
                 <li class="group">
-                    <a href="${pageContext.request.contextPath}/news-detail?id=${listTop5ViewsCount.id}&categoryId=${listTop5ViewsCount.categoryId}"
+                    <a href="${pageContext.request.contextPath}/user/news-detail?id=${listTop5ViewsCount.id}&categoryId=${listTop5ViewsCount.categoryId}"
                        class="flex items-start space-x-2 text-gray-600 group-hover:text-blue-600 transition-colors duration-200">
                         <span class="text-blue-600 mt-1">•</span>
                         <span class="flex-1 line-clamp-2">${listTop5ViewsCount.title}</span>
@@ -64,7 +64,7 @@
         <ul class="space-y-3">
             <c:forEach var="recentlyViewedNews" items="${recentlyViewedNews}">
                 <li class="group">
-                    <a href="${pageContext.request.contextPath}/news-detail?id=${recentlyViewedNews.id}&categoryId=${recentlyViewedNews.categoryId}"
+                    <a href="${pageContext.request.contextPath}/user/news-detail?id=${recentlyViewedNews.id}&categoryId=${recentlyViewedNews.categoryId}"
                        class="flex items-start space-x-2 text-gray-600 group-hover:text-blue-600 transition-colors duration-200">
                         <span class="text-blue-600 mt-1">•</span>
                         <span class="flex-1 line-clamp-2">${recentlyViewedNews.title}</span>
