@@ -3,7 +3,7 @@
 > Ứng dụng web đơn giản sử dụng JSP/Servlet để quản lý một trang báo truyền thông online.
 
 ---
-
+---
 ## 🧩 Đặt vấn đề
 
 Doanh nghiệp **ABC News** hoạt động trong lĩnh vực truyền thông online. Với đội ngũ phóng viên hùng hậu, họ cung cấp tin tức thời sự hằng ngày đến độc giả thông qua website. Tuy nhiên, hệ thống cũ không còn đáp ứng nhu cầu, vì vậy cần xây dựng một website mới hiện đại hơn.
