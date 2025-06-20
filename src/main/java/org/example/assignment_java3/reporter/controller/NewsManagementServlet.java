@@ -116,6 +116,7 @@ public class NewsManagementServlet extends BaseReporterServlet {
         switch (action) {
             case "create": {
                 News news = new News();
+                news.setId(id);
                 news.setTitle(title);
                 news.setPostDate(postDate);
                 news.setViewCount(viewCount);
@@ -176,6 +177,7 @@ public class NewsManagementServlet extends BaseReporterServlet {
                     processGet(req, resp);
                     return;
                 }
+                news.setId(id);
                 news.setTitle(title);
                 news.setPostDate(postDate);
                 news.setViewCount(viewCount);
