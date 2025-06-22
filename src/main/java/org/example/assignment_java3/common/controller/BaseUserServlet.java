@@ -91,7 +91,7 @@ public abstract class BaseUserServlet extends HttpServlet {
     protected void setPageAndForward(HttpServletRequest req, HttpServletResponse resp, String pagePath) {
         try {
             // Lấy danh sách loại tin để hiển thị menu
-            req.setAttribute("categoryList", categoryService.getAllCategory());
+            req.setAttribute("categoryList", categoryService.findAll());
 
             // Gán các dữ liệu chung như tin mới, tin nổi bật, tin xem gần đây
             addCommonNewsAttributes(req);

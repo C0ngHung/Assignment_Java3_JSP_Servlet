@@ -1,6 +1,6 @@
 package org.example.assignment_java3.service.serviceImpl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.example.assignment_java3.dao.UserDAO;
 import org.example.assignment_java3.entity.User;
 import org.example.assignment_java3.service.UserService;
@@ -8,69 +8,43 @@ import org.example.assignment_java3.service.UserService;
 import java.util.List;
 import java.util.Optional;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
 
     @Override
-    public User createUser(User user) {
-        try {
-            return userDAO.createUser(user);
-        } catch (RuntimeException e) {
-            System.out.println("Lỗi khi tạo user: " + e.getMessage());
-            return null;
-        }
+    public List<User> findAll() {
+        return userDAO.findAll();
     }
 
     @Override
-    public boolean updateUser(User user) {
-        try {
-            return userDAO.updateUser(user);
-        } catch (RuntimeException e) {
-            System.out.println("Lỗi khi cập nhật user: " + e.getMessage());
-            return false;
-        }
+    public Optional<User> findById(String id) {
+        return Optional.ofNullable(userDAO.findById(id));
     }
 
     @Override
-    public User getUserById(String id) {
-        try {
-            return userDAO.getUserById(id);
-        } catch (RuntimeException e) {
-            System.out.println("Lỗi khi lấy user: " + e.getMessage());
-            return null;
-        }
+    public boolean insert(User user) {
+        return userDAO.insert(user) > 0;
     }
 
     @Override
-    public int deleteUser(String id) {
-        try {
-            return userDAO.deleteUser(id);
-        } catch (RuntimeException e) {
-            System.out.println("Lỗi khi xóa user: " + e.getMessage());
-            return 0;
-        }
+    public boolean update(User user) {
+        return userDAO.update(user) > 0;
+    }
+
+    @Override
+    public boolean delete(String id) {
+        return userDAO.delete(id) > 0;
+    }
+
+    @Override
+    public boolean exists(String id) {
+        return userDAO.findById(id) != null;
     }
 
     @Override
     public Optional<User> checkLogin(String username, String password) {
-        try {
-            return userDAO.checkLogin(username, password);
-        } catch (RuntimeException e) {
-            System.out.println("Lỗi khi lấy user: " + e.getMessage());
-            return Optional.empty();
-        }
+        return userDAO.checkLogin(username, password);
     }
-
-    @Override
-    public List<User> getAllUsers() {
-        try {
-            return userDAO.getAllUsers();
-        } catch (RuntimeException e) {
-            System.out.println("Lỗi khi lấy danh sách user: " + e.getMessage());
-            return null;
-        }
-    }
-
 }

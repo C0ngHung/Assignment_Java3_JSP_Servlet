@@ -8,9 +8,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import org.example.assignment_java3.dao.CategoryDAO;
+import org.example.assignment_java3.dao.NewsDAO;
 import org.example.assignment_java3.dao.impl.CategoryDAOImpl;
 import org.example.assignment_java3.dao.impl.NewsDAOImpl;
-import org.example.assignment_java3.dao.NewsDAO;
 import org.example.assignment_java3.entity.Category;
 import org.example.assignment_java3.entity.News;
 import org.example.assignment_java3.entity.User;
@@ -20,12 +20,12 @@ import org.example.assignment_java3.service.serviceImpl.CategoryServiceImpl;
 import org.example.assignment_java3.service.serviceImpl.NewsServiceImpl;
 import org.example.assignment_java3.utils.ImageUtil;
 
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @WebServlet("/admin/news-management")
 @MultipartConfig
@@ -36,181 +36,165 @@ public class NewsManagementServlet extends HttpServlet {
 
     @Override
     public void init() {
-        NewsDAO newsDAO = new NewsDAOImpl();
-        this.newsService = new NewsServiceImpl(newsDAO);
-        CategoryDAO categoryDAO = new CategoryDAOImpl();
-        this.categoryService = new CategoryServiceImpl(categoryDAO);
+        this.newsService = new NewsServiceImpl(new NewsDAOImpl());
+        this.categoryService = new CategoryServiceImpl(new CategoryDAOImpl());
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<News> newsList = newsService.findAll();
+        List<Category> categoryList = categoryService.findAll();
 
-        List<News> newsList = newsService.getAllNews();
-        List<Category> categoryList = categoryService.getAllCategory();
-        String page = "/views/pages/admin/news-management.jsp";
-
-        req.setAttribute("page", page);
+        req.setAttribute("page", "/views/pages/admin/news-management.jsp");
         req.setAttribute("newsList", newsList);
         req.setAttribute("categoryList", categoryList);
         req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        // Lấy user hiện tại từ session
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
         if (user == null) {
             resp.sendRedirect(req.getContextPath() + "/login.jsp");
             return;
         }
 
-        String author = user.getId();
         String action = req.getParameter("action");
-
-        // Kiểm tra action null
         if (action == null) {
-            System.err.println("Action parameter is null");
+            req.setAttribute("error", "Không xác định hành động.");
             doGet(req, resp);
             return;
         }
 
-        // Xử lý action edit
-        if ("edit".equals(action)) {
-            String id = req.getParameter("id");
-            if (id == null) {
-                System.err.println("ID parameter is null for edit action");
-                doGet(req, resp);
+        switch (action) {
+            case "edit":
+                handleEdit(req, resp);
                 return;
-            }
-            News news = newsService.getNewsById(id);
-            if (news == null) {
-                System.err.println("News not found for ID: " + id);
-                doGet(req, resp);
-                return;
-            }
-            List<Category> categoryList = categoryService.getAllCategory();
-            List<News> newsList = newsService.getAllNews();
-            String page = "/views/pages/admin/news-management.jsp";
+            case "create":
+                handleCreate(req, resp, user);
+                break;
+            case "update":
+                handleUpdate(req, resp, user);
+                break;
+            case "delete":
+                handleDelete(req, resp);
+                break;
+            case "reset":
+                break;
+            default:
+                req.setAttribute("error", "Hành động không hợp lệ.");
+        }
 
-            req.setAttribute("editNews", news);
-            req.setAttribute("categoryList", categoryList);
-            req.setAttribute("newsList", newsList);
-            req.setAttribute("page", page);
-            req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
+        doGet(req, resp);
+    }
+
+    private void handleEdit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        if (id == null) {
+            req.setAttribute("error", "Thiếu ID để sửa.");
+            doGet(req, resp);
             return;
         }
 
-        // Common fields
-        String id = req.getParameter("id");
-        String title = req.getParameter("title");
-        Date postDate;
-        try {
-            String postDateStr = req.getParameter("postDate");
-            if (postDateStr != null && !postDateStr.isEmpty()) {
-                LocalDate localDate = LocalDate.parse(postDateStr);
-                postDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            } else {
-                postDate = new Date();
-            }
-        } catch (Exception e) {
-            postDate = new Date();
-            System.err.println("Error parsing postDate: " + e.getMessage());
+        Optional<News> newsOpt = newsService.findById(id);
+        if (newsOpt.isEmpty()) {
+            req.setAttribute("error", "Không tìm thấy tin với ID: " + id);
+            doGet(req, resp);
+            return;
         }
 
+        req.setAttribute("editNews", newsOpt.get());
+        req.setAttribute("newsList", newsService.findAll());
+        req.setAttribute("categoryList", categoryService.findAll());
+        req.setAttribute("page", "/views/pages/admin/news-management.jsp");
+        req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
+    }
+
+    private void handleCreate(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+        News news = extractNewsFromRequest(req, user);
+        if (news.getTitle().isEmpty() || news.getCategoryId().isEmpty() || news.getContent().isEmpty()) {
+            req.setAttribute("error", "Vui lòng điền đầy đủ thông tin.");
+            return;
+        }
+
+        if (news.getId() != null && newsService.findById(news.getId()).isPresent()) {
+            req.setAttribute("error", "ID đã tồn tại. Vui lòng nhập ID khác.");
+            return;
+        }
+
+        newsService.insert(news);
+        req.setAttribute("success", "Tạo mới tin thành công!");
+    }
+
+    private void handleUpdate(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
+        String id = req.getParameter("id");
+        Optional<News> newsOpt = newsService.findById(id);
+        if (newsOpt.isEmpty()) {
+            req.setAttribute("error", "Không tìm thấy bài viết với ID: " + id);
+            return;
+        }
+
+        News news = newsOpt.get();
+        News updatedNews = extractNewsFromRequest(req, user);
+
+        news.setTitle(updatedNews.getTitle());
+        news.setPostDate(updatedNews.getPostDate());
+        news.setViewCount(updatedNews.getViewCount());
+        news.setCategoryId(updatedNews.getCategoryId());
+        news.setContent(updatedNews.getContent());
+        news.setHome(updatedNews.isHome());
+        if (updatedNews.getImage() != null) {
+            news.setImage(updatedNews.getImage());
+        }
+
+        newsService.update(news);
+        req.setAttribute("success", "Cập nhật tin tức thành công!");
+    }
+
+    private void handleDelete(HttpServletRequest req, HttpServletResponse resp) {
+        String id = req.getParameter("id");
+        if (id == null || id.isEmpty()) {
+            req.setAttribute("error", "Thiếu ID để xoá.");
+            return;
+        }
+        newsService.delete(id);
+        req.setAttribute("success", "Xoá bài viết thành công!");
+    }
+
+    private News extractNewsFromRequest(HttpServletRequest req, User user) throws ServletException, IOException {
+        String title = req.getParameter("title");
+        String postDateStr = req.getParameter("postDate");
         String viewCountStr = req.getParameter("viewCount");
         String categoryId = req.getParameter("categoryId");
         String content = req.getParameter("content");
         String home = req.getParameter("home");
-        boolean homeValue = false;
-        if (home != null) {
-            homeValue = "1".equals(home) || "true".equalsIgnoreCase(home);
-        }
+        boolean homeValue = "1".equals(home) || "true".equalsIgnoreCase(home);
+
         int viewCount = (viewCountStr != null && !viewCountStr.isEmpty()) ? Integer.parseInt(viewCountStr) : 0;
-
-        // Kiểm tra các tham số bắt buộc cho create/update
-        if (("create".equals(action) || "update".equals(action)) && (title == null || title.isEmpty() || categoryId == null || categoryId.isEmpty() || content == null || content.isEmpty())) {
-            System.err.println("Missing required parameters: title=" + title + ", categoryId=" + categoryId + ", content=" + content);
-            req.setAttribute("error", "Vui lòng điền đầy đủ tiêu đề, loại tin và nội dung.");
-            doGet(req, resp);
-            return;
+        Date postDate;
+        try {
+            LocalDate localDate = LocalDate.parse(postDateStr);
+            postDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        } catch (Exception e) {
+            postDate = new Date();
         }
 
-        // Xử lý file ảnh
         Part imagePart = req.getPart("image");
         String imageFileName = ImageUtil.save(imagePart, getServletContext());
 
-
-        switch (action) {
-            case "create": {
-                News news = new News();
-                news.setTitle(title);
-                news.setPostDate(postDate);
-                news.setViewCount(viewCount);
-                news.setCategoryId(categoryId);
-                news.setContent(content);
-                news.setAuthor(author);
-                news.setHome(homeValue);
-                if (imageFileName != null) {
-                    news.setImage(imageFileName);
-                }
-                newsService.createNews(news);
-                req.setAttribute("success", "Tạo mới tin thành công!");
-                break;
-            }
-            case "update": {
-                if (id == null || id.isEmpty()) {
-                    System.err.println("ID parameter is null or empty for update action");
-                    req.setAttribute("error", "Không tìm thấy ID bài viết để cập nhật.");
-                    doGet(req, resp);
-                    return;
-                }
-                News news = newsService.getNewsById(id);
-                if (news == null) {
-                    System.err.println("News not found for ID: " + id);
-                    req.setAttribute("error", "Không tìm thấy bài viết với ID: " + id);
-                    doGet(req, resp);
-                    return;
-                }
-                news.setTitle(title);
-                news.setPostDate(postDate);
-                news.setViewCount(viewCount);
-                news.setCategoryId(categoryId);
-                news.setContent(content);
-                news.setAuthor(author);
-                news.setHome(homeValue);
-                if (imageFileName != null) {
-                    news.setImage(imageFileName);
-                }
-                newsService.updateNews(news);
-                req.setAttribute("success", "Cập nhật tin thức thành công");
-                break;
-            }
-            case "delete": {
-                if (id == null || id.isEmpty()) {
-                    System.err.println("ID parameter is null or empty for delete action");
-                    req.setAttribute("error", "Không tìm thấy ID bài viết để xóa.");
-                    doGet(req, resp);
-                    return;
-                }
-                newsService.deleteNews(id);
-                req.setAttribute("success", "Xóa tin thức thành công");
-                break;
-            }
-            case "reset": {
-                // Không làm gì, chỉ reload trang
-                break;
-            }
-            default: {
-                System.err.println("Invalid action: " + action);
-                req.setAttribute("error", "Hành động không hợp lệ: " + action);
-                break;
-            }
+        News news = new News();
+        news.setId(req.getParameter("id")); // optional for update
+        news.setTitle(title);
+        news.setPostDate(postDate);
+        news.setViewCount(viewCount);
+        news.setCategoryId(categoryId);
+        news.setContent(content);
+        news.setAuthor(user.getId());
+        news.setHome(homeValue);
+        if (imageFileName != null) {
+            news.setImage(imageFileName);
         }
 
-        // Quay lại danh sách
-        doGet(req, resp);
+        return news;
     }
 }

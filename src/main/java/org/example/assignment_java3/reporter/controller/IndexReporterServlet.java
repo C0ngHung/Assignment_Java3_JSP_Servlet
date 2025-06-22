@@ -16,10 +16,22 @@ public class IndexReporterServlet extends BaseReporterServlet {
     @Override
     protected void processGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        List<News> newsList = newsService.getAllNewsByHome();
-        String page = "/views/pages/admin/news.jsp";
-        req.setAttribute("newsList", newsList);
-        forwardToAdminLayout(req, resp, page);
+
+        try {
+            // Lấy danh sách tin tức hiển thị ở trang chủ
+            List<News> newsList = newsService.getAllNewsByHome();
+
+            // Gán danh sách vào attribute để hiển thị ở JSP
+            req.setAttribute("newsList", newsList);
+
+            // Gọi phương thức từ lớp cha để forward tới layout quản trị
+            forwardToAdminLayout(req, resp, "/views/pages/admin/news.jsp");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("error", "Đã xảy ra lỗi khi tải dữ liệu trang phóng viên.");
+            forwardToAdminLayout(req, resp, "/views/pages/error/error.jsp");
+        }
     }
 
     @Override

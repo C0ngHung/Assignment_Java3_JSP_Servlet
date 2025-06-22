@@ -1,17 +1,12 @@
 package org.example.assignment_java3.service;
 
+import org.example.assignment_java3.common.service.BaseService;
 import org.example.assignment_java3.entity.Category;
 
-import java.util.List;
+/**
+ * Giao diện Service cho danh mục (Category).
+ * Kế thừa toàn bộ CRUD từ BaseService.
+ */
+public interface CategoryService extends BaseService<Category, String> {
 
-public interface CategoryService {
-    Category createCategory(Category category);
-
-    Category getCategoryById(String id);
-
-    Category updateCategory(Category category);
-
-    int deleteCategory(String id);
-
-    List<Category> getAllCategory();
 }
