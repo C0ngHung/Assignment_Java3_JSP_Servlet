@@ -5,7 +5,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.assignment_java3.common.controller.BaseAdminServlet;
-import org.example.assignment_java3.dao.NewsDAO;
 import org.example.assignment_java3.dao.impl.NewsDAOImpl;
 import org.example.assignment_java3.entity.News;
 import org.example.assignment_java3.service.NewsService;
@@ -21,8 +20,7 @@ public class IndexAdminServlet extends BaseAdminServlet {
 
     @Override
     public void init() throws ServletException {
-        NewsDAO newsDAO = new NewsDAOImpl();
-        this.newsService = new NewsServiceImpl(newsDAO);
+        this.newsService = new NewsServiceImpl(new NewsDAOImpl());
     }
 
     @Override
@@ -33,6 +31,7 @@ public class IndexAdminServlet extends BaseAdminServlet {
         List<News> newsList = newsService.getAllNewsByHome();
         req.setAttribute("newsList", newsList);
 
+        // Forward đến layout admin
         forwardToAdminLayout(req, resp, "/views/pages/admin/news.jsp");
     }
 }

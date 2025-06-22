@@ -21,7 +21,7 @@ public class NewsLetterServlet extends HttpServlet {
     private NewsletterService newsletterService;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         NewsletterDAO newsletterDAO = new NewsletterDAOImpl();
         this.newsletterService = new NewsletterServiceImpl(newsletterDAO);
     }
@@ -31,33 +31,22 @@ public class NewsLetterServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Lấy danh sách newsletter
-        List<Newsletter> newsletterList = newsletterService.getAllNewsletter();
+        List<Newsletter> newsletterList = newsletterService.findAll();
         req.setAttribute("newsletterList", newsletterList);
 
-        // Nếu có editEmail thì gán vào form
+        // Xử lý hiển thị form sửa nếu có editEmail
         String editEmail = req.getParameter("editEmail");
-        System.out.println(editEmail);
-        if (editEmail != null) {
-            Newsletter newsletter = newsletterService.getNewsletterEmail(editEmail);
-            if (newsletter != null) {
-                req.setAttribute("editNewsletter", newsletter);
-            } else {
-                req.setAttribute("error", "Không tìm thấy email: " + editEmail);
-            }
+        if (editEmail != null && !editEmail.isBlank()) {
+            newsletterService.findByEmail(editEmail).ifPresentOrElse(
+                    newsletter -> req.setAttribute("editNewsletter", newsletter),
+                    () -> req.setAttribute("error", "Không tìm thấy email: " + editEmail)
+            );
         }
 
         // Hiển thị thông báo nếu có (sau redirect)
         HttpSession session = req.getSession();
-        String success = (String) session.getAttribute("success");
-        String error = (String) session.getAttribute("error");
-        if (success != null) {
-            req.setAttribute("success", success);
-            session.removeAttribute("success");
-        }
-        if (error != null) {
-            req.setAttribute("error", error);
-            session.removeAttribute("error");
-        }
+        transferFlashMessage(session, req, "success");
+        transferFlashMessage(session, req, "error");
 
         req.setAttribute("page", "/views/pages/admin/newsletter-management.jsp");
         req.getRequestDispatcher("/views/layouts/admin/layoutAdmin.jsp").forward(req, resp);
@@ -80,74 +69,75 @@ public class NewsLetterServlet extends HttpServlet {
         }
 
         switch (action) {
-            case "create": {
-                if (email == null || email.trim().isEmpty()) {
-                    session.setAttribute("error", "Email không được để trống.");
-                    break;
-                }
-
-                // Kiểm tra định dạng email
-                if (!email.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$")) {
-                    session.setAttribute("error", "Email không hợp lệ.");
-                    break;
-                }
-
-                Newsletter existing = newsletterService.getNewsletterEmail(email);
-                if (existing != null) {
-                    session.setAttribute("error", "Email này đã tồn tại.");
-                    break;
-                }
-
-                Newsletter newNewsletter = new Newsletter();
-                newNewsletter.setEmail(email);
-                newNewsletter.setEnable(true); // mặc định enable
-                newsletterService.createNewsletter(newNewsletter);
-                session.setAttribute("success", "Thêm email thành công.");
-                break;
-            }
-
-            case "update": {
-                if (email == null || email.trim().isEmpty()) {
-                    session.setAttribute("error", "Không có email để cập nhật.");
-                    break;
-                }
-
-                Newsletter existingNewsletter = newsletterService.getNewsletterEmail(email);
-                if (existingNewsletter == null) {
-                    session.setAttribute("error", "Không tìm thấy email để cập nhật.");
-                    break;
-                }
-
-                boolean enable = "1".equals(enableParam);
-                existingNewsletter.setEnable(enable);
-                newsletterService.updateNewsletter(existingNewsletter);
-                session.setAttribute("success", "Cập nhật trạng thái thành công.");
-                break;
-            }
-
-            case "delete": {
-                if (email == null || email.trim().isEmpty()) {
-                    session.setAttribute("error", "Không có email để xóa.");
-                    break;
-                }
-
-                newsletterService.deleteNewsletter(email);
-                session.setAttribute("success", "Xoá email thành công.");
-                break;
-            }
-
-            case "reset": {
+            case "create" -> handleCreate(session, email);
+            case "update" -> handleUpdate(session, email, enableParam);
+            case "delete" -> handleDelete(session, email);
+            case "reset" -> {
                 // Không xử lý gì cả
-                break;
             }
-
-            default: {
-                session.setAttribute("error", "Hành động không hợp lệ: " + action);
-                break;
-            }
+            default -> session.setAttribute("error", "Hành động không hợp lệ: " + action);
         }
 
-        // Redirect sau xử lý POST
         resp.sendRedirect(req.getContextPath() + "/admin/newsletter");
+    }
+
+    private void handleCreate(HttpSession session, String email) {
+        if (email == null || email.trim().isEmpty()) {
+            session.setAttribute("error", "Email không được để trống.");
+            return;
+        }
+
+        if (!email.matches("^[\\w\\.-]+@[\\w\\.-]+\\.\\w{2,}$")) {
+            session.setAttribute("error", "Email không hợp lệ.");
+            return;
+        }
+
+        if (newsletterService.exists(email)) {
+            session.setAttribute("error", "Email đã tồn tại.");
+            return;
+        }
+
+        Newsletter newsletter = new Newsletter();
+        newsletter.setEmail(email);
+        newsletter.setEnable(true);
+        newsletterService.insert(newsletter);
+        session.setAttribute("success", "Thêm email thành công.");
+    }
+
+    private void handleUpdate(HttpSession session, String email, String enableParam) {
+        if (email == null || email.trim().isEmpty()) {
+            session.setAttribute("error", "Không có email để cập nhật.");
+            return;
+        }
+
+        var optionalNewsletter = newsletterService.findByEmail(email);
+        if (optionalNewsletter.isEmpty()) {
+            session.setAttribute("error", "Không tìm thấy email: " + email);
+            return;
+        }
+
+        Newsletter newsletter = optionalNewsletter.get();
+        boolean enable = "1".equals(enableParam);
+        newsletter.setEnable(enable);
+        newsletterService.update(newsletter);
+        session.setAttribute("success", "Cập nhật trạng thái thành công.");
+    }
+
+    private void handleDelete(HttpSession session, String email) {
+        if (email == null || email.trim().isEmpty()) {
+            session.setAttribute("error", "Không có email để xóa.");
+            return;
+        }
+
+        newsletterService.delete(email);
+        session.setAttribute("success", "Xóa email thành công.");
+    }
+
+    private void transferFlashMessage(HttpSession session, HttpServletRequest req, String key) {
+        Object message = session.getAttribute(key);
+        if (message != null) {
+            req.setAttribute(key, message);
+            session.removeAttribute(key);
+        }
     }
 }

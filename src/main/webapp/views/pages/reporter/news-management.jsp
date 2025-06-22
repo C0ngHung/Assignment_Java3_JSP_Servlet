@@ -15,6 +15,49 @@
 <!-- Header Section -->
 <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-200/50 sticky top-0 z-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Alert Messages -->
+        <c:if test="${not empty success}">
+            <div id="toast-message">
+                <div class="mb-8 animate-bounce-subtle">
+                    <div class="bg-gradient-to-r from-emerald-50 to-green-50 border-l-4 border-emerald-400 p-6 rounded-r-xl shadow-lg">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor"
+                                     viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-sm font-semibold text-emerald-800">Thành công!</h3>
+                                <p class="text-sm text-emerald-700 mt-1">${success}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <div id="toast-message">
+                <div class="mb-8 animate-bounce-subtle">
+                    <div class="bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-400 p-6 rounded-r-xl shadow-lg">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div class="ml-4">
+                                <h3 class="text-sm font-semibold text-red-800">Có lỗi xảy ra!</h3>
+                                <p class="text-sm text-red-700 mt-1">${error}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
                 <div class="bg-gradient-to-br from-blue-600 to-indigo-700 p-3 rounded-2xl shadow-lg">
@@ -336,7 +379,7 @@
                                 </button>
 
                                 <a href="${pageContext.request.contextPath}/reporter/news-management?action=reset"
-                                        class="group flex items-center justify-center px-4 py-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 focus:ring-4 focus:ring-gray-200 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                   class="group flex items-center justify-center px-4 py-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 focus:ring-4 focus:ring-gray-200 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                                     <svg class="w-5 h-5 mr-2 group-hover:rotate-180 transition-transform duration-500"
                                          fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -430,7 +473,7 @@
 
                                             <p class="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2">
                                                     ${fn:substring(news.content, 0, 120)}
-                                                    <c:if test="${fn:length(news.content) > 120}">...</c:if>
+                                                <c:if test="${fn:length(news.content) > 120}">...</c:if>
                                             </p>
 
                                             <!-- Metadata -->

@@ -15,23 +15,34 @@ public class CategoryServlet extends BaseUserServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
-        // Lấy phần path sau /user/category/
+        // Lấy phần thông tin đường dẫn từ request
         String pathInfo = req.getPathInfo();
-        if (pathInfo == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy trang");
+        if (pathInfo == null || pathInfo.length() <= 1) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy trang.");
             return;
         }
 
-        // Lấy id category từ URL
+        // Cắt bỏ dấu "/" đầu tiên
         String categoryId = pathInfo.substring(1);
 
-        // Lấy danh sách tin tức theo category
-        List<News> newsList = newsService.getNewsByCategory(categoryId);
-        req.setAttribute("newsList", newsList);
+        try {
+            // Lấy danh sách tin tức theo category
+            List<News> newsList = newsService.getNewsByCategory(categoryId);
 
-        // Gọi hàm trong base để set layout + thuộc tính chung
+            if (newsList == null || newsList.isEmpty()) {
+                req.setAttribute("message", "Không có tin tức nào trong danh mục này.");
+            } else {
+                req.setAttribute("newsList", newsList);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace(); // hoặc log lỗi bằng Logger
+            req.setAttribute("error", "Đã xảy ra lỗi khi tải tin tức theo danh mục.");
+        }
+
+        // Hiển thị trang danh sách tin
         setPageAndForward(req, resp, "/views/pages/user/news.jsp");
     }
 }

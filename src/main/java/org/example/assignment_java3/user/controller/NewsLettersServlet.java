@@ -27,27 +27,41 @@ public class NewsLettersServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
+        // Lấy email từ form
         String email = req.getParameter("email");
 
-        if (email == null || email.trim().isEmpty()) {
-            req.getSession().setAttribute("message", "Vui lòng nhập email.");
-        } else if (newsletterService.isEmailExists(email)) {
-            req.getSession().setAttribute("message", "Email đã đăng ký nhận tin rồi.");
-        } else {
-            Newsletter newsletter = new Newsletter();
-            newsletter.setEmail(email);
-            newsletter.setEnable(true);
+        try {
+            // Kiểm tra dữ liệu hợp lệ
+            if (email == null || email.trim().isEmpty()) {
+                req.getSession().setAttribute("message", "Vui lòng nhập email.");
+            } else if (newsletterService.isEmailExists(email)) {
+                req.getSession().setAttribute("message", "Email đã đăng ký nhận tin rồi.");
+            } else {
+                // Tạo bản ghi mới
+                Newsletter newsletter = new Newsletter();
+                newsletter.setEmail(email);
+                newsletter.setEnable(true);
 
-            newsletterService.createNewsletter(newsletter);
+                boolean success = newsletterService.insert(newsletter);
+                if (success) {
+                    req.getSession().setAttribute("message", "Đăng ký nhận tin thành công.");
+                } else {
+                    req.getSession().setAttribute("message", "Đăng ký thất bại. Vui lòng thử lại.");
+                }
+            }
 
-            req.getSession().setAttribute("message", "Đăng ký nhận tin thành công.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.getSession().setAttribute("message", "Đã xảy ra lỗi khi đăng ký nhận tin.");
         }
 
-        // Lấy đường dẫn trang trước (referer) để forward lại
+        // Lấy đường dẫn trang trước (referer) để redirect lại
         String referer = req.getHeader("Referer");
         if (referer != null) {
             resp.sendRedirect(referer);
         } else {
+            // Nếu không có, fallback về layout chính
             req.getRequestDispatcher("/views/layouts/user/layoutUser.jsp").forward(req, resp);
         }
     }

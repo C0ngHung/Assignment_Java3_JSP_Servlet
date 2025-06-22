@@ -22,23 +22,40 @@ public class NewsDetailServlet extends BaseUserServlet {
         String id = req.getParameter("id");
         String categoryId = req.getParameter("categoryId");
 
-        // Gọi service để lấy thông tin tin tức chi tiết
-        News news = newsService.getNewsById(id);
+        if (id == null || categoryId == null) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Thiếu tham số ID hoặc categoryId");
+            return;
+        }
 
-        // Gọi danh sách tin liên quan theo category
-        List<News> newsList = newsService.getNewsByCategory(categoryId);
+        try {
+            // Gọi service để lấy thông tin tin tức chi tiết
+            News news = newsService.findById(id).orElse(null);
 
-        // Cập nhật lượt xem cho tin tức
-        newsService.updateViewCount(id);
+            if (news == null) {
+                req.setAttribute("error", "Không tìm thấy tin tức phù hợp.");
+                setPageAndForward(req, resp, "/views/pages/user/news-detail.jsp");
+                return;
+            }
 
-        // Cập nhật lịch sử lượt xem cho người dùng
-        HttpSession session = req.getSession();
-        session.setMaxInactiveInterval(30);
-        updateHistoryView(session, id);
+            // Gọi danh sách tin liên quan theo category
+            List<News> newsList = newsService.getNewsByCategory(categoryId);
 
-        // Truyền dữ liệu cho JSP
-        req.setAttribute("news", news);
-        req.setAttribute("newsList", newsList);
+            // Cập nhật lượt xem cho tin tức
+            newsService.updateViewCount(id);
+
+            // Cập nhật lịch sử lượt xem cho người dùng
+            HttpSession session = req.getSession();
+            session.setMaxInactiveInterval(30); // set timeout 30s
+            updateHistoryView(session, id);
+
+            // Truyền dữ liệu cho JSP
+            req.setAttribute("news", news);
+            req.setAttribute("newsList", newsList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setAttribute("error", "Đã xảy ra lỗi khi hiển thị chi tiết tin tức.");
+        }
 
         // Dùng hàm từ base để set layout + thuộc tính chung
         setPageAndForward(req, resp, "/views/pages/user/news-detail.jsp");

@@ -1,99 +1,85 @@
 package org.example.assignment_java3.dao.impl;
 
-
 import org.example.assignment_java3.dao.NewsletterDAO;
 import org.example.assignment_java3.entity.Newsletter;
 import org.example.assignment_java3.utils.JdbcHelper;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewsletterDAOImpl implements NewsletterDAO {
 
-    private static final String SQL_INSERT_NEWSLETTER = "INSERT INTO newsletter (email, enable) VALUES (?, ?)";
-    private static final String SQL_GET_NEWSLETTER_BY_EMAIL = "SELECT * FROM newsletter WHERE email = ?";
-    private static final String SQL_UPDATE_NEWSLETTER = "UPDATE newsletter SET enable = ? WHERE email = ?";
-    private static final String SQL_DELETE_NEWSLETTER = "DELETE FROM newsletter WHERE email = ?";
-    private static final String SQL_GET_ALL_NEWSLETTER = "SELECT * FROM newsletter";
-    private static final String SQL_IS_EMAIL_EXISTS = "SELECT COUNT(*) FROM newsletter WHERE email = ?";
-    private static final String SQL_GET_ALL_NEWSLETTER_BY_ENABLED = "SELECT email FROM newsletter WHERE enable = 1;";
+    private static final String SQL_INSERT = "INSERT INTO newsletter (email, enable) VALUES (?, ?)";
+    private static final String SQL_SELECT_BY_ID = "SELECT * FROM newsletter WHERE email = ?";
+    private static final String SQL_UPDATE = "UPDATE newsletter SET enable = ? WHERE email = ?";
+    private static final String SQL_DELETE = "DELETE FROM newsletter WHERE email = ?";
+    private static final String SQL_SELECT_ALL = "SELECT * FROM newsletter";
+    private static final String SQL_EXISTS = "SELECT COUNT(*) FROM newsletter WHERE email = ?";
+    private static final String SQL_ENABLED = "SELECT * FROM newsletter WHERE enable = 1";
 
-    private Newsletter mapNewsletterFromResultSetToNewsletter(ResultSet rs) {
-        try {
-            Newsletter newsletter = new Newsletter();
-            newsletter.setEmail(rs.getString("email"));
-            newsletter.setEnable(rs.getBoolean("enable"));
-            return newsletter;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    private Newsletter map(ResultSet rs) throws SQLException {
+        Newsletter n = new Newsletter();
+        n.setEmail(rs.getString("email"));
+        n.setEnable(rs.getBoolean("enable"));
+        return n;
+    }
+
+    // BaseDAO methods
+
+    @Override
+    public int insert(Newsletter newsletter) {
+        return JdbcHelper.update(SQL_INSERT, newsletter.getEmail(), newsletter.isEnable());
     }
 
     @Override
-    public Newsletter createNewsletter(Newsletter newsletter) {
-        if (newsletter == null) return null;
-        int row = JdbcHelper.update(SQL_INSERT_NEWSLETTER,
-                newsletter.getEmail(),
-                newsletter.isEnable());
-        return row > 0 ? newsletter : null;
+    public Newsletter findById(String email) {
+        return JdbcHelper.query(SQL_SELECT_BY_ID, rs -> rs.next() ? map(rs) : null, email);
     }
 
     @Override
-    public Newsletter getNewsletterByEmail(String email) {
-        return JdbcHelper.query(SQL_GET_NEWSLETTER_BY_EMAIL, rs -> {
-            if (rs.next()) {
-                return mapNewsletterFromResultSetToNewsletter(rs);
-            }
-            return null;
-        }, email);
+    public int update(Newsletter newsletter) {
+        return JdbcHelper.update(SQL_UPDATE, newsletter.isEnable(), newsletter.getEmail());
     }
 
     @Override
-    public Newsletter updateNewsletter(Newsletter newsletter) {
-        if (newsletter == null) return null;
-        int row = JdbcHelper.update(SQL_UPDATE_NEWSLETTER,
-                newsletter.isEnable(),
-                newsletter.getEmail());
-        return row > 0 ? newsletter : null;
+    public int delete(String email) {
+        return JdbcHelper.update(SQL_DELETE, email);
     }
 
     @Override
-    public int deleteNewsletter(String id) {
-        return JdbcHelper.update(SQL_DELETE_NEWSLETTER, id);
-    }
-
-    @Override
-    public List<Newsletter> getAllNewsletter() {
-        return JdbcHelper.query(SQL_GET_ALL_NEWSLETTER, rs -> {
-            List<Newsletter> newsletterList = new ArrayList<>();
-            while (rs.next()) {
-                newsletterList.add(mapNewsletterFromResultSetToNewsletter(rs));
-            }
-            return newsletterList;
+    public List<Newsletter> findAll() {
+        return JdbcHelper.query(SQL_SELECT_ALL, rs -> {
+            List<Newsletter> list = new ArrayList<>();
+            while (rs.next()) list.add(map(rs));
+            return list;
         });
     }
 
     @Override
-    public boolean isEmailExists(String email) {
-        return JdbcHelper.query(SQL_IS_EMAIL_EXISTS, rs -> {
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-            return false;
-        }, email);
+    public boolean exists(String email) {
+        return JdbcHelper.query(SQL_EXISTS, rs -> rs.next() && rs.getInt(1) > 0, email);
+    }
+
+    // Custom methods
+
+    @Override
+    public Newsletter findByEmail(String email) {
+        return findById(email); // có thể dùng lại
     }
 
     @Override
-    public List<Newsletter> getAllNewsletterByEnabled() {
-        return JdbcHelper.query(SQL_GET_ALL_NEWSLETTER_BY_ENABLED, rs -> {
-            List<Newsletter> newsletterList = new ArrayList<>();
-            while (rs.next()) {
-                Newsletter newsletter = new Newsletter();
-                newsletter.setEmail(rs.getString("email"));
-                newsletterList.add(newsletter);
-            }
-            return newsletterList;
+    public boolean isEmailExists(String email) {
+        return exists(email); // tái sử dụng luôn exists()
+    }
+
+    @Override
+    public List<Newsletter> findAllEnabled() {
+        return JdbcHelper.query(SQL_ENABLED, rs -> {
+            List<Newsletter> list = new ArrayList<>();
+            while (rs.next()) list.add(map(rs));
+            return list;
         });
     }
 }
